@@ -1,0 +1,75 @@
+$lineColor: rgba(0, 0, 0,0.3);
+$borderColor : rgba(0, 0, 0,0.3);
+$textColor : rgb(5,185,5);
+$bgColor : #fff;
+
+.progressBar {
+  padding: 0;
+  counter-reset: step;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  @include mobile{
+    flex-direction: column;
+  }
+
+  &::before {
+    //line
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 5%;
+    right: 5%;
+    min-height: 2px;
+    background: $lineColor;
+
+    @include mobile{
+      left:25%;
+      top:5%;
+      bottom:10%;
+      max-width: 2px;
+    }
+
+  }
+
+  &-item {
+    list-style-type: none;
+    position: relative;
+    font-weight: bolder;
+    @include mobile{
+      display: flex;
+      white-space: nowrap;
+      align-items: center;
+      margin-right: 5%;
+    }
+    &.active {
+      color: $textColor;
+      &::before {
+        border-color:$textColor; 
+        box-shadow: 0px 0px 20px $textColor;
+      }
+    }
+    &::before {
+      //圓圈
+      content: counter(step);
+      counter-increment: step;
+      width: 80px;
+      height: 80px;
+      line-height: 70px;
+      font-size: 40px;
+      border: 3px solid $borderColor;
+      text-align: center;
+      display: block;
+      margin: 0 auto 30px auto;
+      border-radius: 50%;
+      background: $bgColor;
+      
+      @include mobile{
+        margin-left:25%;
+        margin-top:30px;
+        transform: translateX(-50%);
+      }
+    }
+
+  }
+}

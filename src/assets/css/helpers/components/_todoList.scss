@@ -1,0 +1,39 @@
+.todoList {
+  position: relative;
+  box-shadow: 15px 15px 20px black;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  @each $color,
+  $value in $theme-colors {
+    &-#{$color} {
+      @include gradationColor(137deg, $value, lighten($value,20%),lighten($value,30%));
+    }
+  }
+}
+.todoList-body {
+  margin: 0 auto;
+  padding: 30px 0;
+  width: 90%;
+  background: transparent;
+}
+.todoBtn-group {
+  display: flex;
+  position: absolute;
+  top: -50px;
+  left: -0;
+}
+.todoBtn {
+  border: 0px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transition: transform 1.5s;
+  padding: 10px 20px;
+  @each $color,
+  $value in $theme-colors {
+    &-#{$color} {
+      background: $value;
+      color: white;
+    }
+  }
+}

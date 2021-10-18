@@ -1,0 +1,29 @@
+.itemBox {
+  width: 100%;
+  height: 250px;
+  @include imageStyle;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  overflow:hidden;
+  &-Img {
+    width: 100%;
+    height: 100%;
+    transition:transform  .5s ease-out;
+    &:hover {
+      transform: scale(1.2, 1.2);
+    }
+  }
+
+  &-mask {
+    text-align: center;
+    padding: 10px 0;
+    color: black;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, .5);
+    z-index: 1000;
+  }
+}

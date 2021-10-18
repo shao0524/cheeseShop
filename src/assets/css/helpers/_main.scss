@@ -1,0 +1,105 @@
+
+//frontNavbar
+.navbarBG {
+  @include gradationColor(45deg, #DAC9A6, #D7B98E, #FFB11B, #FFC408, #F9BF45, #f3e294);
+}
+
+//cartList badge
+.badge {
+  position: absolute;
+  top: 0;
+  left: 36px;
+}
+
+
+
+//favorite
+.favoriteBanner {
+  height: 230px;
+  width: 100%;
+}
+
+.favoriteWrapper {
+  min-height: calc(100vh - 370px);
+}
+
+.favoriteOffset {
+  position: absolute;
+  color:$customer;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 20px;
+  width:30%;
+  text-shadow:10px 10px 10px rgba(0,0,0,.5) ;
+  font-weight: bolder;
+  @include pad{
+    width: 40%;
+  }
+  @include mobile {
+    width: 60%;
+  }
+
+}
+
+//event
+.eventWrapper {
+  min-height: calc(100vh - 389px);
+}
+
+// login
+.bgLogin {
+  background-image: url('~image/login/loginBG.jpg');
+  @include imageStyle;
+}
+
+
+// productCard mask
+.mask {
+  display: block;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  transition: all .5s;
+
+  &:hover {
+    background: rgba(0, 0, 0, .5);
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+
+    &::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 900;
+      content: "\f00e";
+      color: rgba(255, 255, 255, .5);
+      font-size: 64px;
+    }
+  }
+}
+
+//map
+#map {
+  width: 600px;
+  height: 450px;
+
+  @include pad {
+    width: 650px;
+    height: 550px;
+  }
+
+  @include mobile {
+    width: 300px;
+    height: 350px;
+  }
+}
+
+
+//footer
+.footBg {
+  @include gradationColor(45deg, #DAC9A6, #D7B98E, #FFB11B, #FFC408, #F9BF45, #f3e294);
+}

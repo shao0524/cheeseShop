@@ -1,32 +1,32 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <VueLoading :active.sync="isLoading" />
+    <Alert />
     <router-view />
   </div>
 </template>
 
+<script>
+import Alert from "components/Alert.vue";
+export default {
+  name: "App",
+  components: {
+    Alert,
+  },
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  methods: {},
+  created() {
+    this.$bus.$on("isLoading", (status) => {
+      this.isLoading = status;
+    });
+  },
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+@import "./assets/css/all";
 </style>
