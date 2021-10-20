@@ -1,4 +1,3 @@
-/* eslint-disable vue/comment-directive */
 <template>
   <div>
     <AdminNavbar />

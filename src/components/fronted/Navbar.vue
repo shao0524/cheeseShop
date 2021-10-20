@@ -156,11 +156,9 @@
               >
                 <i class="fas fa-shopping-cart fa-2x"></i>
               </button>
-              <span
-                class="badge badge-danger rounded-circle"
-                v-if="itemQty && is_signin"
-                >{{ itemQty }}</span
-              >
+              <span class="badge badge-danger rounded-circle">{{
+                itemQty
+              }}</span>
             </div>
           </li>
         </ul>

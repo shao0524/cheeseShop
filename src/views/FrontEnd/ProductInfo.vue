@@ -119,8 +119,6 @@
                   >已開封但冷藏保存的起司，請在一週內食用完畢。
                 </li>
               </ul>
-              <p></p>
-              <p></p>
             </div>
           </div>
           <div class="col-6 col-md-4 d-none d-md-block">
@@ -205,7 +203,7 @@ export default {
   },
   watch: {
     $route: {
-      handler: function () {
+      handler() {
         this.getProduct(this.$route.params.productId);
         $("html,body").animate({ scrollTop: "0px" }, 1000);
       },

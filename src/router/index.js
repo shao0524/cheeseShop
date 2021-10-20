@@ -63,33 +63,21 @@ export default new Router({
               path: "cartlist",
               name: "CartList",
               component: () => import("views/FrontEnd/CartList.vue"),
-              meta: {
-                requiresAuth: true,
-              },
             },
             {
               path: "customerinfo",
               name: "CustomerInfo",
               component: () => import("views/FrontEnd/CustomerInfo.vue"),
-              meta: {
-                requiresAuth: true,
-              },
             },
             {
               path: "checkout/:orderId",
               name: "OrderCheck",
               component: () => import("views/FrontEnd/OrderCheck.vue"),
-              meta: {
-                requiresAuth: true,
-              },
             },
             {
               path: "ordercompleted",
               name: "OrderCompleted",
               component: () => import("views/FrontEnd/OrderCompleted.vue"),
-              meta: {
-                requiresAuth: true,
-              },
             },
           ],
         },

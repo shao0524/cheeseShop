@@ -4,21 +4,15 @@
       <a
         href="#Card"
         class="listGroup-item titleStyle"
-        @click="
-          (clickedCategory = '全部商品'), changeCategory('全部商品'), scoller()
-        "
+        @click.prevent="changeCategory('全部商品'), scoller()"
         :class="{ active: clickedCategory == '全部商品' }"
         >全部商品</a
       >
       <a
         href="#Card"
         class="listGroup-item titleStyle"
-        @click="
-          (clickedCategory = `${category}`),
-            changeCategory(`${category}`),
-            scoller()
-        "
-        :class="{ active: clickedCategory == `${category}` }"
+        @click.prevent="changeCategory(category), scoller()"
+        :class="{ active: clickedCategory == category }"
         v-for="(category, index) in categories"
         :key="index"
         >{{ category }}</a
@@ -39,6 +33,7 @@ export default {
   methods: {
     changeCategory(category) {
       const vm = this;
+      vm.clickedCategory = category;
       vm.$emit("changeCategory", category);
     },
     scoller() {
@@ -48,7 +43,6 @@ export default {
   created() {
     const category = this.$route.params.category;
     if (category) {
-      this.clickedCategory = category;
       this.changeCategory(category);
     }
   },

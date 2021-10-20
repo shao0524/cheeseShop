@@ -67,15 +67,7 @@
           class="btn btn-primary w-50"
           @click.native="closeSiderbar"
           to="/order"
-          v-if="isSignIn"
           >去結帳</router-link
-        >
-        <router-link
-          class="btn btn-primary w-50"
-          @click.native="closeSiderbar"
-          to="/login"
-          v-else
-          >請先登入</router-link
         >
       </div>
     </div>
@@ -149,11 +141,15 @@ export default {
     this.$bus.$on("signIn", (status) => {
       this.isSignIn = status;
     });
+    this.$bus.$on("reloadCartItem", () => {
+      this.getCartList();
+    });
   },
   beforeDestroy() {
     this.$bus.$off("addItem:success");
     this.$bus.$off("openSiderbar");
     this.$bus.$off("signIn");
+    this.$bus.$off("reloadCartItem");
   },
 };
 </script>

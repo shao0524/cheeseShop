@@ -277,7 +277,7 @@ export default {
     },
   },
   computed: {
-    newProducts: function () {
+    newProducts() {
       let newArray = [];
       this.allProducts.forEach((item, index) => {
         if (index < 4) {
