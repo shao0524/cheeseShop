@@ -50,7 +50,7 @@
               class="nav-link font-weight-bolder h4 mb-0"
               :class="{ 'text-info': this.$route.name === 'ProductList' }"
               @click.native="closeNavbar"
-              to="/products"
+              to="/products/productList/全部商品"
               >產品介紹</router-link
             >
           </li>

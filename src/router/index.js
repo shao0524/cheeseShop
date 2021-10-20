@@ -1,33 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-
-//pages
-//前台
-import Home from "views/FrontEnd/Home.vue";
-import About from "views/FrontEnd/About.vue";
-import Login from "views/FrontEnd/Login.vue";
-import ProductInfo from "views/FrontEnd/ProductInfo.vue";
-import CartList from "views/FrontEnd/CartList.vue";
-import CustomerInfo from "views/FrontEnd/CustomerInfo.vue";
-import OrderCheck from "views/FrontEnd/OrderCheck.vue";
-import OrderCompleted from "views/FrontEnd/OrderCompleted.vue";
-import MyOrderList from "views/FrontEnd/MyOrderList.vue";
-import MyCouponList from "views/FrontEnd/MyCouponList.vue";
-import ProductList from "views/FrontEnd/ProductList.vue";
-import Event from "views/FrontEnd/Event.vue";
-import Favorite from "views/FrontEnd/Favorite.vue";
-//後台
-
-import Catalogue from "views/admin/AdminCatalogue.vue";
-import OrderList from "views/admin/AdminOrderList.vue";
-import CouponList from "views/admin/AdminCouponList.vue";
-
-//layout
-import Layout from "views/layout/Layout.vue";
-import DashboardLayout from "views/layout/Dashboard.vue";
-import Products from "views/layout/ProductsLayout.vue";
-import Order from "views/layout/Order.vue";
-import Customer from "views/layout/Customer.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -40,64 +12,57 @@ export default new Router({
     {
       path: "/",
       name: "Layout",
-      component: Layout,
+      component: () => import("views/layout/Layout.vue"),
       redirect: "/home",
       children: [
         {
           path: "",
           name: "Home",
-          component: Home,
+          component: () => import("views/FrontEnd/Home.vue"),
         },
         {
           path: "/about",
           name: "About",
-          component: About,
+          component: () => import("views/FrontEnd/About.vue"),
         },
         {
           path: "products/",
           name: "Products",
-          component: Products,
+          component: () => import("views/layout/ProductsLayout.vue"),
           redirect: "/products/productList/",
           children: [
             {
-              path: "productList/",
+              path: "productList/:category",
               name: "ProductList",
-              component: ProductList,
-              children: [
-                {
-                  path: ":category",
-                  name: "ProductList/:category",
-                  component: ProductList,
-                },
-              ],
+              component: () => import("views/FrontEnd/ProductList.vue"),
             },
             {
               path: "item/:productId",
               name: "ProductInfo",
-              component: ProductInfo,
+              component: () => import("views/FrontEnd/ProductInfo.vue"),
             },
           ],
         },
         {
           path: "/favorite",
           name: "Favorite",
-          component: Favorite,
+          component: () => import("views/FrontEnd/Favorite.vue"),
         },
         {
           path: "/event",
           name: "Event",
-          component: Event,
+          component: () => import("views/FrontEnd/Event.vue"),
         },
         {
           path: "order/",
           name: "Order",
-          component: Order,
+          component: () => import("views/layout/Order.vue"),
           redirect: "/order/cartlist",
           children: [
             {
               path: "cartlist",
               name: "CartList",
-              component: CartList,
+              component: () => import("views/FrontEnd/CartList.vue"),
               meta: {
                 requiresAuth: true,
               },
@@ -105,7 +70,7 @@ export default new Router({
             {
               path: "customerinfo",
               name: "CustomerInfo",
-              component: CustomerInfo,
+              component: () => import("views/FrontEnd/CustomerInfo.vue"),
               meta: {
                 requiresAuth: true,
               },
@@ -113,7 +78,7 @@ export default new Router({
             {
               path: "checkout/:orderId",
               name: "OrderCheck",
-              component: OrderCheck,
+              component: () => import("views/FrontEnd/OrderCheck.vue"),
               meta: {
                 requiresAuth: true,
               },
@@ -121,7 +86,7 @@ export default new Router({
             {
               path: "ordercompleted",
               name: "OrderCompleted",
-              component: OrderCompleted,
+              component: () => import("views/FrontEnd/OrderCompleted.vue"),
               meta: {
                 requiresAuth: true,
               },
@@ -131,7 +96,7 @@ export default new Router({
         {
           path: "customer/",
           name: "Customer",
-          component: Customer,
+          component: () => import("views/layout/Customer.vue"),
           redirect: "/customer/myorderlist",
           meta: {
             requiresAuth: true,
@@ -143,7 +108,7 @@ export default new Router({
               meta: {
                 requiresAuth: true,
               },
-              component: MyOrderList,
+              component: () => import("views/FrontEnd/MyOrderList.vue"),
             },
             {
               path: "mycouponlist",
@@ -151,7 +116,7 @@ export default new Router({
               meta: {
                 requiresAuth: true,
               },
-              component: MyCouponList,
+              component: () => import("views/FrontEnd/MyCouponList.vue"),
             },
           ],
         },
@@ -160,18 +125,18 @@ export default new Router({
     {
       path: "/login",
       name: "Login",
-      component: Login,
+      component: () => import("views/FrontEnd/Login.vue"),
     },
     {
       path: "/admin",
       name: "DashboardLayout",
       redirect: "/admin/catalogue",
-      component: DashboardLayout,
+      component: () => import("views/layout/Dashboard.vue"),
       children: [
         {
           path: "catalogue",
           name: "Catalogue",
-          component: Catalogue,
+          component: () => import("views/admin/AdminCatalogue.vue"),
           meta: {
             requiresAuth: true,
           },
@@ -179,7 +144,7 @@ export default new Router({
         {
           path: "orderlist",
           name: "OrderList",
-          component: OrderList,
+          component: () => import("views/admin/AdminOrderList.vue"),
           meta: {
             requiresAuth: true,
           },
@@ -187,7 +152,7 @@ export default new Router({
         {
           path: "couponlist",
           name: "CouponList",
-          component: CouponList,
+          component: () => import("views/admin/AdminCouponList.vue"),
           meta: {
             requiresAuth: true,
           },

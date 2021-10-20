@@ -69,8 +69,8 @@
 
 <script>
 import $ from "jquery";
-import Navbar from "components/Navbar.vue";
-import Sidebar from "components/Sidebar.vue";
+import Navbar from "components/fronted/Navbar.vue";
+import Sidebar from "components/fronted/Sidebar.vue";
 export default {
   components: {
     Navbar,

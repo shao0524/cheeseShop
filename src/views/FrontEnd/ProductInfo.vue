@@ -148,8 +148,8 @@
 </template>
 
 <script>
-import Swiper from "components/Swiper.vue";
-import FavoriteBtn from "components/FavoriteBtn.vue";
+import Swiper from "components/fronted/Swiper.vue";
+import FavoriteBtn from "components/fronted/FavoriteBtn.vue";
 import $ from "jquery";
 export default {
   components: {

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import ProductCard from "components/ProductCard.vue";
+import ProductCard from "components/fronted/ProductCard.vue";
 import "swiper/css/swiper.css";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 export default {

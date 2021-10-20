@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import FavoriteBtn from "components/FavoriteBtn.vue";
+import FavoriteBtn from "components/fronted/FavoriteBtn.vue";
 export default {
   props: ["item"],
   components: {
