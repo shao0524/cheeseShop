@@ -234,5 +234,8 @@ export default {
       this.itemQty = len;
     });
   },
+  beforeDestroy() {
+    this.$bus.$off("cartItemLen");
+  },
 };
 </script>

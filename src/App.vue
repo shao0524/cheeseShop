@@ -24,6 +24,9 @@ export default {
       this.isLoading = status;
     });
   },
+  beforeDestroy() {
+    this.$bus.$off("isLoading");
+  },
 };
 </script>
 

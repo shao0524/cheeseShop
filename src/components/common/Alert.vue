@@ -75,5 +75,9 @@ export default {
       this.updateMessage(msg, status);
     });
   },
+  beforeDestroy() {
+    this.$bus.$off("Alert:success");
+    this.$bus.$off("Alert:error");
+  },
 };
 </script>

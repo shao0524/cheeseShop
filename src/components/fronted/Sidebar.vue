@@ -150,5 +150,10 @@ export default {
       this.isSignIn = status;
     });
   },
+  beforeDestroy() {
+    this.$bus.$off("addItem:success");
+    this.$bus.$off("openSiderbar");
+    this.$bus.$off("signIn");
+  },
 };
 </script>

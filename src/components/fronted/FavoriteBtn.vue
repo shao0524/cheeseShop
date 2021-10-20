@@ -63,5 +63,8 @@ export default {
       this.getFavorites();
     });
   },
+  beforeDestroy() {
+    this.$bus.$off("updateFavorite");
+  },
 };
 </script>
