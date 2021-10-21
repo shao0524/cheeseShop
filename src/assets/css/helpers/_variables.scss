@@ -78,14 +78,13 @@ $theme-colors: () !default;
 $theme-colors: map-merge(
   (
     "primary":    #6A4C9C,
-    "secondary":  $secondary,
-    "success":    #1B813E,
-    "info":       #00AA90,
+    "secondary": $secondary,
+    "success":    $success,
+    "info":       $info,
     "warning":    #FFB11B,
     "danger":     #db3544,
     "light":      $light,
     "dark":       $dark,
-    "customer":   #724938,
   ),
   $theme-colors
 );

@@ -11,22 +11,22 @@
         <div class="col-12 col-md-6 col-lg-6 text-center px-0">
           <img :src="product.imageUrl" class="shadow-3 image" />
         </div>
-        <div class="col-12 col-md-6 col-lg-6 text-center mt-3 mt-md-0">
-          <div class="mb-1">
+        <div class="col-12 col-md-6 col-lg-6 mt-3 mt-md-0">
+          <div class="mb-1 ml-3">
             <h3>{{ product.title }}</h3>
             <h3>{{ product.titleEng }}</h3>
           </div>
           <div class="row justify-content-between mx-1">
-            <ul class="text-left">
+            <ul class="text-left ml-3">
               <li>產地：{{ product.place }}</li>
               <li>原料：{{ product.material }}</li>
               <li>單位：1 {{ product.unit }}</li>
             </ul>
             <FavoriteBtn :product="product" />
           </div>
-
+          <hr />
           <div class="mb-1 d-flex justify-content-between">
-            <div>
+            <div class="ml-3">
               <del
                 class="mr-3 h5"
                 v-if="!(product.origin_price == product.price)"
@@ -92,14 +92,16 @@
             <h5 class="pl-3 py-2 bg-secondary text-white text-left">
               產品介紹
             </h5>
-            <p class="text-justify lineHeight-2">{{ product.content }}</p>
+            <p class="text-justify lineHeight-2 pt-2 pb-2">
+              {{ product.content }}
+            </p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- notice -->
-    <section style="backgroundcolor: #17a2b84d">
+    <section style="background-color: #17a2b84d">
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-8">

@@ -15,9 +15,9 @@
     .nav-link {
       font-weight: 500;
       line-height: 2em;
-      color: #333;
+      color: $dark;
       &.active {
-        color: #007bff;
+        color: $primary;
       }
     }
     &-heading {

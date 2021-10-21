@@ -5,7 +5,7 @@
     padding: 10px;
     border-radius: 50%;
     z-index:1000;
-    @include gradationColor(#f1e9c5, #fdfb66);
+    background: $warning;
     @include mobile{
       padding:5px;
     }

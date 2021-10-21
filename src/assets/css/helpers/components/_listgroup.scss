@@ -32,7 +32,7 @@ $lineHeight: 2.5em;
         }
         &.active{
             &::before{
-                border-bottom:$lineHeight/2*1.732 solid orange;
+                border-bottom:$lineHeight/2*1.732 solid $warning;
                 left:-2.5px;
                 top:2px;
             }

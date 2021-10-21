@@ -7,11 +7,9 @@
 //cartList badge
 .badge {
   position: absolute;
-  top: 0;
+  top: 10%;
   left: 36px;
 }
-
-
 
 //favorite
 .favoriteBanner {
@@ -31,7 +29,7 @@
   transform: translate(-50%, -50%);
   padding: 20px 20px;
   width:30%;
-  text-shadow:10px 10px 10px rgba(0,0,0,.5) ;
+  text-shadow:10px 10px 10px rgba(0,0,0,.3) ;
   font-weight: bolder;
   @include pad{
     width: 40%;
@@ -65,7 +63,7 @@
   transition: all .5s;
 
   &:hover {
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, .3);
     font-size: 14px;
     display: flex;
     justify-content: center;

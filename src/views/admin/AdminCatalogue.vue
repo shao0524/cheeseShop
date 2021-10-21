@@ -31,7 +31,7 @@
           </td>
           <td width="120" class="text-right">{{ item.price | currency }}</td>
           <td width="120">
-            <span class="text-warning" v-if="item.is_enabled">啟用中</span>
+            <span class="text-success" v-if="item.is_enabled">啟用中</span>
             <span class="text-danger" v-else>未啟用</span>
           </td>
           <td width="200">

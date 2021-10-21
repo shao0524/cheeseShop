@@ -3,8 +3,16 @@
     <button
       type="button"
       class="btn text-secondary"
-      :class="{ 'text-danger': is_follow }"
-      @click="!is_follow ? addFavorite(product) : removeFavorite(product)"
+      v-if="!is_follow"
+      @click="addFavorite(product)"
+    >
+      <i class="fab fa-gratipay fa-2x"></i>
+    </button>
+    <button
+      type="button"
+      class="btn text-danger"
+      v-else
+      @click="removeFavorite(product)"
     >
       <i class="fab fa-gratipay fa-2x"></i>
     </button>
@@ -26,14 +34,17 @@ export default {
     },
     addFavorite(product) {
       const vm = this;
-      const index = vm.favorites.findIndex((item) => item.id === product.id);
-      if (index === -1) {
+      const itemIndex = vm.favorites.findIndex(
+        (item) => item.id === product.id
+      );
+      if (itemIndex === -1) {
         vm.favorites.push(product);
         localStorage.setItem("favorites", JSON.stringify(vm.favorites));
       }
-      vm.$bus.$emit("Alert:success", `${product.title} 已加入收藏`);
-      vm.$bus.$emit("updateFavorite");
-      vm.$bus.$emit("updateFavoritePage");
+      vm.$bus.$emit("favoriteBtn:update");
+      // vm.$bus.$emit("navbarFavorites:update");
+      // vm.$bus.$emit("favoritePage:update");
+      // vm.$bus.$emit("Alert:success", `${product.title} 已加入收藏`);
     },
     removeFavorite(product) {
       const vm = this;
@@ -43,9 +54,10 @@ export default {
         }
       });
       localStorage.setItem("favorites", JSON.stringify(vm.favorites));
-      vm.$bus.$emit("Alert:error", `${product.title} 已取消收藏`);
-      vm.$bus.$emit("updateFavorite");
-      vm.$bus.$emit("updateFavoritePage");
+      vm.$bus.$emit("favoriteBtn:update");
+      // vm.$bus.$emit("navbarFavorites:update");
+      // vm.$bus.$emit("favoritePage:update");
+      // vm.$bus.$emit("Alert:error", `${product.title} 已取消收藏`);
     },
   },
   computed: {
@@ -57,14 +69,15 @@ export default {
       return false;
     },
   },
-  mounted() {
+  created() {
     this.getFavorites();
-    this.$bus.$on("updateFavorite", () => {
+    this.$bus.$on("favoriteBtn:update", () => {
+      console.log("update");
       this.getFavorites();
     });
   },
   beforeDestroy() {
-    this.$bus.$off("updateFavorite");
+    this.$bus.$off("favoriteBtn:update");
   },
 };
 </script>

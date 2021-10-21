@@ -30,7 +30,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-info': this.$route.name === 'Home' }"
+              :class="{ 'text-success': this.$route.name === 'Home' }"
               @click.native="closeNavbar"
               to="/"
               >首頁</router-link
@@ -39,7 +39,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-info': this.$route.name == 'About' }"
+              :class="{ 'text-success': this.$route.name == 'About' }"
               @click.native="closeNavbar"
               to="/about"
               >關於起司</router-link
@@ -48,7 +48,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-info': this.$route.name === 'ProductList' }"
+              :class="{ 'text-success': this.$route.name === 'ProductList' }"
               @click.native="closeNavbar"
               to="/products/productList/全部商品"
               >產品介紹</router-link
@@ -57,7 +57,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-info': this.$route.name === 'Event' }"
+              :class="{ 'text-success': this.$route.name === 'Event' }"
               @click.native="closeNavbar"
               to="/event"
               >優惠活動</router-link
@@ -67,14 +67,19 @@
 
         <ul class="navbar-nav ml-3">
           <!-- 我的最愛 -->
-          <li class="nav-item mr-3 py-2">
+          <li class="nav-item mr-3 py-2 position-relative">
             <router-link
-              class="btn text-secondary"
+              class="btn"
               to="/favorite"
               @click.native="closeNavbar"
-              :class="{ 'text-danger': is_signin }"
+              :class="{ 'text-success': is_signin }"
               ><i class="fas fa-heart fa-2x"></i
             ></router-link>
+            <span
+              class="badge badge-danger rounded-circle"
+              v-if="favoritesLen > 0"
+              >{{ favoritesLen }}</span
+            >
           </li>
           <!-- 會員 -->
           <li class="nav-item mr-3 py-2">
@@ -139,11 +144,11 @@
           </li>
 
           <!-- 購物車 -->
-          <li class="nav-item mr-3 py-2">
+          <li class="nav-item mr-3 py-2 position-relative">
             <div class="dropdown">
               <button
                 type="button"
-                class="btn position-relative border-0 bg-transparent"
+                class="btn border-0 bg-transparent"
                 id="cart"
                 :class="{
                   'text-success': is_signin,
@@ -156,10 +161,12 @@
               >
                 <i class="fas fa-shopping-cart fa-2x"></i>
               </button>
-              <span class="badge badge-danger rounded-circle">{{
-                itemQty
-              }}</span>
             </div>
+            <span
+              class="badge badge-danger rounded-circle"
+              v-if="cartItemLen > 0"
+              >{{ cartItemLen }}</span
+            >
           </li>
         </ul>
       </div>
@@ -172,7 +179,8 @@ import $ from "jquery";
 export default {
   data() {
     return {
-      itemQty: 0,
+      cartItemLen: 0,
+      favoritesLen: 0,
       favorite: [],
       has_favorite: false,
     };
@@ -212,6 +220,16 @@ export default {
     closeNavbar() {
       $(".navbar-toggler").click();
     },
+    getCartListLen() {
+      const vm = this;
+      const cartList = JSON.parse(localStorage.getItem("cartList"));
+      vm.cartItemLen = cartList.length;
+    },
+    getFavoriteLen() {
+      const vm = this;
+      const favorites = JSON.parse(localStorage.getItem("favorites"));
+      vm.favoritesLen = favorites.length;
+    },
   },
   computed: {
     is_signin() {
@@ -225,15 +243,23 @@ export default {
     },
   },
   created() {
+    //取得購物車數量
+    this.getCartListLen();
+    //取得我的最愛數量
+    this.getFavoriteLen();
     //檢查登入狀態
     this.checkLoginStatus();
     //購物車物件數量
-    this.$bus.$on("cartItemLen", (len) => {
-      this.itemQty = len;
+    this.$bus.$on("cartList:update", () => {
+      this.getCartListLen();
+    });
+    this.$bus.$on("navbarFavorites:update", () => {
+      this.getFavoriteLen();
     });
   },
   beforeDestroy() {
-    this.$bus.$off("cartItemLen");
+    this.$bus.$off("cartList:update");
+    this.$bus.$off("navbarFavorites:update");
   },
 };
 </script>

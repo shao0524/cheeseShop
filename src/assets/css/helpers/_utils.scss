@@ -6,6 +6,7 @@
 // img
 .image {
   @include imageStyle;
+  object-fit:cover;
   max-width:100%;
 }
 
@@ -21,7 +22,7 @@
 .shadow{
   @for $i from 1 through 5 {
       &-#{$i}{
-         box-shadow: 5px 5px $i*5px 5px rgba(0,0,0,.5); 
+         box-shadow: 5px 5px $i*5px 5px rgba(0,0,0,.1); 
       }
   }
 }
@@ -38,8 +39,8 @@
 .titleStyle {
   font-family: 'Architects Daughter', 'Architects Daughter', 'Noto Sans TC', cursive, sans-serif;
   display: inline-block;
-  border-bottom: 3px solid $customer;
-  color: $customer;
+  border-bottom: 3px solid $primary;
+  color:$primary;
   margin: 0 auto;
 }
 

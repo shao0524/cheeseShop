@@ -26,7 +26,14 @@
           </div>
         </div>
 
-        <h2 class="text-center" v-else>目前沒有收藏的商品</h2>
+        <h2 class="text-center" v-else>還沒有收藏的商品喔，快去找吧</h2>
+        <div class="text-center mt-5">
+          <router-link
+            to="/products/productList/全部商品"
+            class="btn btn-primary b"
+            >立刻行動</router-link
+          >
+        </div>
       </section>
     </div>
   </div>
@@ -59,12 +66,13 @@ export default {
   },
   created() {
     this.getFavorite();
-    this.$bus.$on("updateFavoritePage", () => {
+
+    this.$bus.$on("favoritePage:update", () => {
       this.getFavorite();
     });
   },
   beforeDestroy() {
-    this.$bus.$off("updateFavoritePage");
+    this.$bus.$off("favoritePage:update");
   },
 };
 </script>

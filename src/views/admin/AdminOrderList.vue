@@ -24,7 +24,7 @@
             {{ order.paid_date | formatTime }}
           </td>
           <td width="120">
-            <span class="text-warning d-block" v-if="order.is_paid"
+            <span class="text-success d-block" v-if="order.is_paid"
               >已付款</span
             >
             <span class="text-danger d-block" v-else>尚未付款</span>
@@ -32,7 +32,7 @@
           <td width="120">
             <a
               href="#"
-              class="btn btn-info btn-sm"
+              class="btn btn-secondary btn-sm"
               @click.prevent="openModal(order)"
               >查看訂單</a
             >

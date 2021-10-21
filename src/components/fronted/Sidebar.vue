@@ -26,21 +26,21 @@
             <tr v-for="item in cartList" :key="item.id">
               <td width="80">
                 <img
-                  :src="item.product.imageUrl"
-                  :alt="item.product.title"
+                  :src="item.imageUrl"
+                  :alt="item.title"
                   width="50"
                   height="50"
                 />
               </td>
-              <td class="text-center align-middle">{{ item.product.title }}</td>
+              <td class="text-center align-middle">{{ item.title }}</td>
               <td class="text-center align-middle" width="80">
                 {{ item.qty }}
               </td>
               <td class="text-right align-middle" width="120">
-                {{ item.total | currency }}
+                {{ (item.price * item.qty) | currency }}
               </td>
               <td class="text-center align-middle" width="80">
-                <button class="btn text-white" @click="removeItem(item.id)">
+                <button class="btn text-white" @click="removeItem(item)">
                   <i class="fas fa-trash"></i>
                 </button>
               </td>
@@ -59,16 +59,25 @@
             </tr>
           </tfoot>
         </table>
-        <h2 class="h2 text-white text-center" v-else>目前購物車沒有商品</h2>
-      </div>
-      <!-- button -->
-      <div class="text-center mb-3" v-if="cartList.length != 0">
-        <router-link
-          class="btn btn-primary w-50"
-          @click.native="closeSiderbar"
-          to="/order"
-          >去結帳</router-link
-        >
+        <!-- cartList not null -->
+        <div class="text-center mb-3" v-if="cartList.length != 0">
+          <router-link
+            class="btn btn-primary w-50"
+            @click.native="closeSiderbar"
+            to="/order"
+            >去結帳</router-link
+          >
+        </div>
+        <!-- cartList is null -->
+        <div v-else>
+          <h2 class="h2 text-white text-center">目前購物車沒有商品</h2>
+          <router-link
+            to="/products/productList/全部商品"
+            class="btn btn-primary btn-block mt-5 w-25 mx-auto"
+            @click.native="closeSiderbar"
+            >快去逛逛吧 <i class="fas fa-cart-plus"></i
+          ></router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -80,59 +89,47 @@ export default {
     return {
       isclick: false,
       cartList: [],
-      finalTotal: "",
       isSignIn: false,
     };
   },
   methods: {
     getCartList() {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-      vm.$bus.$emit("isLoading", true);
-      this.$http
-        .get(url)
-        .then((res) => {
-          if (res.data.success) {
-            vm.cartList = res.data.data.carts;
-            vm.finalTotal = res.data.data.final_total;
-            vm.$bus.$emit("cartItemLen", res.data.data.carts.length);
-          }
-          vm.$bus.$emit("isLoading", false);
-        })
-        .catch((error) => {
-          vm.$bus.$emit("isLoading", false);
-          vm.$bus.$emit("Alert:error", error);
-        });
+      vm.cartList = JSON.parse(localStorage.getItem("cartList")) || [];
+      this.$bus.$emit("cartList:update");
     },
-    removeItem(id) {
+    removeItem(item) {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${id}`;
-      vm.$bus.$emit("isLoading", true);
-      this.$http
-        .delete(url)
-        .then((res) => {
-          if (res.data.success) {
-            vm.getCartList();
-          }
-          vm.$bus.$emit("isLoading", false);
-        })
-        .catch((error) => {
-          vm.$bus.$emit("isLoading", false);
-          vm.$bus.$emit("Alert:error", error);
-        });
+      this.$bus.$emit("isLoading", true);
+      const itemIndex = vm.cartList.findIndex(
+        (product) => product.id === item.id
+      );
+      vm.cartList.splice(itemIndex, 1);
+      localStorage.setItem("cartList", JSON.stringify(vm.cartList));
+      vm.getCartList();
+      this.$bus.$emit("Alert:success", `${item.title}從購物車移除`);
+
+      setTimeout(() => {
+        this.$bus.$emit("isLoading", false);
+      }, 1000);
     },
     closeSiderbar() {
       const vm = this;
       vm.isclick = false;
     },
   },
+  computed: {
+    finalTotal() {
+      let total = 0;
+      this.cartList.forEach((item) => {
+        total += parseInt(item.price) * item.qty;
+      });
+      return total;
+    },
+  },
   created() {
     this.getCartList();
     this.closeSiderbar();
-    //加入購物車
-    this.$bus.$on("addItem:success", () => {
-      this.getCartList();
-    });
     //開啟左側購物車列表
     this.$bus.$on("openSiderbar", (status) => {
       this.isclick = status;
@@ -144,12 +141,31 @@ export default {
     this.$bus.$on("reloadCartItem", () => {
       this.getCartList();
     });
+    //加入購物車
+    this.$bus.$on("addtoCart", (item, qty) => {
+      this.$bus.$emit("isLoading", true);
+      const itemIndex = this.cartList.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex === -1) {
+        item.qty = qty;
+        this.cartList.push(item);
+      } else {
+        this.cartList[itemIndex].qty++;
+      }
+      localStorage.setItem("cartList", JSON.stringify(this.cartList));
+      this.getCartList();
+      this.$bus.$emit("Alert:success", `${item.title}成功加入購物車`);
+      setTimeout(() => {
+        this.$bus.$emit("isLoading", false);
+      }, 1000);
+    });
   },
   beforeDestroy() {
-    this.$bus.$off("addItem:success");
     this.$bus.$off("openSiderbar");
     this.$bus.$off("signIn");
     this.$bus.$off("reloadCartItem");
+    this.$bus.$off("addtoCart");
   },
 };
 </script>

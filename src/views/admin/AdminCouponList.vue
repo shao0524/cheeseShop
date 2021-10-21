@@ -33,7 +33,7 @@
             {{ item.due_date | formatTime }}
           </th>
           <td width="120" class="align-middle">
-            <span class="text-warning" v-if="item.is_enabled">啟用中</span>
+            <span class="text-success" v-if="item.is_enabled">啟用中</span>
             <span class="text-danger" v-else>未啟用</span>
           </td>
           <td width="200">

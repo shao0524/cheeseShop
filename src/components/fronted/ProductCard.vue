@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card shadow-3 border-0 h-100"
+    class="card shadow-1 border-0 h-100"
     data-aos="fade-zoom-in"
     data-aos-once="true"
   >
@@ -8,7 +8,7 @@
       <img
         :src="item.imageUrl"
         class="image"
-        style="height: 200px; width: 100%"
+        style="width: 100%"
         :alt="item.title"
       />
       <router-link
@@ -41,7 +41,7 @@
       <div class="text-center">
         <div class="d-flex justify-content-around">
           <FavoriteBtn :product="item" />
-          <button class="btn btn-outline-info h6" @click="addCart(item)">
+          <button class="btn btn-outline-success h6" @click="addCart(item)">
             <i class="fas fa-cart-plus"></i> 加入購物車
           </button>
         </div>
@@ -57,27 +57,25 @@ export default {
   components: {
     FavoriteBtn,
   },
+  data() {
+    return {
+      cart: {
+        products: [],
+      },
+    };
+  },
   methods: {
+    getCartList() {
+      const vm = this;
+      vm.cart.products = JSON.parse(localStorage.getItem("products"));
+    },
     addCart(item, qty = 1) {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-      const cart = {
-        product_id: item.id,
-        qty: qty,
-      };
-      this.$http
-        .post(url, { data: cart })
-        .then((res) => {
-          if (res.data.success) {
-            //更新sidebar
-            vm.$bus.$emit("addItem:success");
-            vm.$bus.$emit("Alert:success", `${item.title} 已成功加入購物車`);
-          }
-        })
-        .catch((error) => {
-          vm.$bus.$emit("Alert:error", error);
-        });
+      vm.$bus.$emit("addtoCart", item, qty);
     },
+  },
+  created() {
+    this.getCartList();
   },
 };
 </script>
