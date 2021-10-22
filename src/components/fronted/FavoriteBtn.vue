@@ -20,6 +20,7 @@ export default {
       vm.$bus.$emit("productList:add", product);
       vm.$bus.$emit("productInfo:add", product);
       vm.$bus.$emit("favorite:add", product);
+      vm.$bus.$emit("home:add", product);
       vm.$bus.$emit("Alert:success", `${product.title}已加入收藏`);
     },
     removeFavorite(product) {
@@ -27,6 +28,7 @@ export default {
       vm.$bus.$emit("productInfo:remove", product);
       vm.$bus.$emit("productList:remove", product);
       vm.$bus.$emit("favorite:remove", product);
+      vm.$bus.$emit("home:remove", product);
       vm.$bus.$emit("Alert:error", `${product.title}已從收藏中移除`);
     },
   },

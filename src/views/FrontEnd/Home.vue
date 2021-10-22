@@ -34,20 +34,16 @@
         <h2 class="titleStyle">News</h2>
         <ul class="news-group">
           <li class="news-item">
-            <h5 class="news-date text-primary d-inline-block">2021/9/3</h5>
-            <a href="#" class="news-content text-primary"
-              >慶祝開幕，全館買2送1！！！</a
-            >
+            <h5 class="news-date d-inline-block">2021/9/3</h5>
+            <a href="#" class="news-content">慶祝開幕，全館買2送1！！！</a>
           </li>
           <li class="news-item">
-            <h5 class="news-date text-primary d-inline-block">2021/9/3</h5>
-            <a href="#" class="news-content text-primary"
-              >消費滿1299，享有免運</a
-            >
+            <h5 class="news-date d-inline-block">2021/9/3</h5>
+            <a href="#" class="news-content">消費滿1299，享有免運</a>
           </li>
           <li class="news-item">
-            <h5 class="news-date text-primary d-inline-block">2021/9/3</h5>
-            <a href="#" class="news-content text-primary">本月銷售冠軍：切達</a>
+            <h5 class="news-date d-inline-block">2021/9/3</h5>
+            <a href="#" class="news-content">本月銷售冠軍：切達</a>
           </li>
         </ul>
       </div>
@@ -192,7 +188,7 @@
             v-for="item in newProducts"
             :key="item.id"
           >
-            <ProductCard :item="item" />
+            <ProductCard :item="item" :favorites="favorites" />
           </div>
         </div>
       </div>
@@ -255,6 +251,7 @@ export default {
     return {
       allProducts: [],
       email: "",
+      favorites: [],
     };
   },
   methods: {
@@ -275,6 +272,10 @@ export default {
           vm.$bus.$emit("Alert:error", error);
         });
     },
+    getFavorites() {
+      const vm = this;
+      vm.favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    },
   },
   computed: {
     newProducts() {
@@ -289,6 +290,30 @@ export default {
   },
   created() {
     this.getProducts();
+    this.$bus.$on("home:add", (item) => {
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex === -1) {
+        this.favorites.push(item);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.$bus.$emit("navbarFavorites:update");
+      }
+    });
+    this.$bus.$on("home:remove", (item) => {
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex !== -1) {
+        this.favorites.splice(itemIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.$bus.$emit("navbarFavorites:update");
+      }
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("home:add");
+    this.$bus.$off("home:remove");
   },
 };
 </script>

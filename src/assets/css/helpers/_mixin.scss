@@ -3,28 +3,19 @@
     @content
   }
 }
-
 ;
-
-
 @mixin mobile {
   @media (max-width:568px) {
     @content
   }
 }
-
 ;
-
 @mixin imageStyle {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
 }
-
 ;
-
-
-
 @mixin gradationColor($direction, $color...) {
   background: linear-gradient($direction, $color);
 }

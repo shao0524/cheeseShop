@@ -4,7 +4,7 @@
       class="navbar navbar-expand-lg navbar-light text-dark navbarBG shadow-3"
     >
       <router-link class="navbar-brand ml-3 logoStyle text-primary" to="/"
-        ><h1>Cheeseny</h1></router-link
+        ><h1 class="text-primary">Cheeseny</h1></router-link
       >
       <button
         class="navbar-toggler"
@@ -30,7 +30,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-success': this.$route.name === 'Home' }"
+              :class="{ 'text-primary': this.$route.name === 'Home' }"
               @click.native="closeNavbar"
               to="/"
               >首頁</router-link
@@ -39,7 +39,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-success': this.$route.name == 'About' }"
+              :class="{ 'text-primary': this.$route.name == 'About' }"
               @click.native="closeNavbar"
               to="/about"
               >關於起司</router-link
@@ -48,7 +48,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-success': this.$route.name === 'ProductList' }"
+              :class="{ 'text-primary': this.$route.name === 'ProductList' }"
               @click.native="closeNavbar"
               to="/products/productList/全部商品"
               >產品介紹</router-link
@@ -57,7 +57,7 @@
           <li class="nav-item">
             <router-link
               class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-success': this.$route.name === 'Event' }"
+              :class="{ 'text-primary': this.$route.name === 'Event' }"
               @click.native="closeNavbar"
               to="/event"
               >優惠活動</router-link
@@ -69,7 +69,7 @@
           <!-- 我的最愛 -->
           <li class="nav-item mr-3 py-2 position-relative">
             <router-link
-              class="btn"
+              class="btn text-secondary"
               to="/favorite"
               @click.native="closeNavbar"
               :class="{ 'text-success': is_signin }"
@@ -148,11 +148,10 @@
             <div class="dropdown">
               <button
                 type="button"
-                class="btn border-0 bg-transparent"
+                class="btn text-secondary border-0 bg-transparent"
                 id="cart"
                 :class="{
                   'text-success': is_signin,
-                  'text-secondary': !is_signin,
                 }"
                 @click.prevent="
                   openCartList();
