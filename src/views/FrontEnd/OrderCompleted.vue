@@ -8,7 +8,9 @@
     >
       <div class="offset d-inline-block">
         <h2>感謝您的購買!</h2>
-        <p class="lead text-info">將會盡快為您出貨，期待您再次光臨本店。</p>
+        <p class="lead font-weight-bolder">
+          將會盡快為您出貨，期待您再次光臨本店。
+        </p>
         <hr class="my-1 my-md-4 my-lg-4" />
         <div class="text-center">
           <router-link class="btn btn-primary" to="/">繼續選購去</router-link>
