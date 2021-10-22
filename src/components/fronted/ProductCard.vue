@@ -40,7 +40,7 @@
       </div>
       <div class="text-center">
         <div class="d-flex justify-content-around">
-          <FavoriteBtn :product="item" />
+          <FavoriteBtn :product="item" :is_follow="is_follow" />
           <button class="btn btn-outline-info h6" @click="addCart(item)">
             <i class="fas fa-cart-plus"></i> 加入購物車
           </button>
@@ -51,32 +51,27 @@
 </template>
 
 <script>
-import FavoriteBtn from "components/FavoriteBtn.vue";
+import FavoriteBtn from "components/fronted/FavoriteBtn.vue";
 export default {
-  props: ["item"],
+  props: ["item", "favorites"],
   components: {
     FavoriteBtn,
   },
   methods: {
     addCart(item, qty = 1) {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-      const cart = {
-        product_id: item.id,
-        qty: qty,
-      };
-      this.$http
-        .post(url, { data: cart })
-        .then((res) => {
-          if (res.data.success) {
-            //更新sidebar
-            vm.$bus.$emit("addItem:success");
-            vm.$bus.$emit("Alert:success", `${item.title} 已成功加入購物車`);
-          }
-        })
-        .catch((error) => {
-          vm.$bus.$emit("Alert:error", error);
-        });
+      vm.$bus.$emit("sidebar:addtoCart", item, qty);
+    },
+  },
+  computed: {
+    is_follow() {
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === this.item.id
+      );
+      if (itemIndex !== -1) {
+        return true;
+      }
+      return false;
     },
   },
 };

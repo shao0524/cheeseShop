@@ -2,7 +2,7 @@
   <div>
     <!-- banner -->
     <div
-      class="banner mb-5"
+      class="banner mb-5 aboutImage"
       :style="{
         backgroundImage: `url(${require('@/assets/image/about/banner-2.png')})`,
       }"
@@ -69,7 +69,7 @@
       </div>
     </section>
     <!-- section2 -->
-    <section class="pb-5" style="backgroundcolor: #17a2b84d">
+    <section class="pb-5" style="background-color: #17a2b84d">
       <div class="container">
         <div
           class="row mb-5 pt-5 mx-3"

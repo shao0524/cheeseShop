@@ -2,7 +2,7 @@
   <div>
     <swiper class="swiper py-3 px-3" :options="swiperOption" ref="myswiper">
       <swiper-slide v-for="item in products" :key="item.id">
-        <ProductCard :item="item" />
+        <ProductCard :item="item" :favorites="favorites" />
       </swiper-slide>
     </swiper>
   </div>
@@ -13,6 +13,7 @@ import ProductCard from "components/fronted/ProductCard.vue";
 import "swiper/css/swiper.css";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 export default {
+  props: ["favorites"],
   components: {
     Swiper,
     SwiperSlide,

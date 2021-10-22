@@ -11,15 +11,12 @@
   z-index: 1021;
   background: rgba(0, 0, 0, .7);
   transform: translateX(-100%);
-
   &.active {
     transform: translateX(0px);
   }
-
   &-close {
     text-align: right;
   }
-
   &-table {
     height: 500px;
     overflow: auto;
@@ -32,7 +29,6 @@
       height: 400px;
     }
   }
-
   @include pad {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -45,6 +41,9 @@
     border-bottom-right-radius: 0;
     width: 100%;
     transform: translateX(-100%);
+  }
+  &-body{
+    max-height: 50%;
   }
 }
 

@@ -72,7 +72,9 @@ export default {
       vm.$bus.$emit("signOut", true);
     },
     closeNavbar() {
-      $(".navbar-toggler").click();
+      if ($(window).width() < 768) {
+        $(".navbar-toggler").click();
+      }
     },
   },
 };

@@ -8,76 +8,78 @@
         ></a>
       </div>
       <!-- main -->
-      <div class="mb-3 offConvas-table">
-        <table
-          class="table text-white w-75 mx-auto"
-          v-if="cartList.length != 0"
-        >
-          <thead>
-            <tr>
-              <th class="text-center" width="80">#</th>
-              <th class="text-center">品名</th>
-              <th class="text-center" width="80">數量</th>
-              <th class="text-center" width="120">金額</th>
-              <th class="text-center" width="80">刪除</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in cartList" :key="item.id">
-              <td width="80">
-                <img
-                  :src="item.imageUrl"
-                  :alt="item.title"
-                  width="50"
-                  height="50"
-                />
-              </td>
-              <td class="text-center align-middle">{{ item.title }}</td>
-              <td class="text-center align-middle" width="80">
-                {{ item.qty }}
-              </td>
-              <td class="text-right align-middle" width="120">
-                {{ (item.price * item.qty) | currency }}
-              </td>
-              <td class="text-center align-middle" width="80">
-                <button class="btn text-white" @click="removeItem(item)">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="4" class="text-right">
-                <h3 class="h3 font-weight-bolder text-white">總計</h3>
-              </td>
-              <td class="text-right" style="color: #ff5f6f">
-                <h3 class="h3 font-weight-bolder text-danger">
-                  {{ finalTotal | currency }}
-                </h3>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-        <!-- cartList not null -->
-        <div class="text-center mb-3" v-if="cartList.length != 0">
-          <router-link
-            class="btn btn-primary w-50"
-            @click.native="closeSiderbar"
-            to="/order"
-            >去結帳</router-link
+      <div class="offConvas-body" v-if="cartList.length != 0">
+        <div class="mb-3 offConvas-table">
+          <table
+            class="table text-white w-75 mx-auto"
+            v-if="cartList.length != 0"
           >
+            <thead>
+              <tr>
+                <th class="text-center" width="80">#</th>
+                <th class="text-center">品名</th>
+                <th class="text-center" width="80">數量</th>
+                <th class="text-center" width="120">金額</th>
+                <th class="text-center" width="80">刪除</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in cartList" :key="item.id">
+                <td width="80">
+                  <img
+                    :src="item.imageUrl"
+                    :alt="item.title"
+                    width="50"
+                    height="50"
+                  />
+                </td>
+                <td class="text-center align-middle">{{ item.title }}</td>
+                <td class="text-center align-middle" width="80">
+                  {{ item.qty }}
+                </td>
+                <td class="text-right align-middle" width="120">
+                  {{ (item.price * item.qty) | currency }}
+                </td>
+                <td class="text-center align-middle" width="80">
+                  <button class="btn text-white" @click="removeItem(item)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" class="text-right">
+                  <h3 class="h3 font-weight-bolder text-white">總計</h3>
+                </td>
+                <td class="text-right" style="color: #ff5f6f">
+                  <h3 class="h3 font-weight-bolder text-danger">
+                    {{ finalTotal | currency }}
+                  </h3>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
-        <!-- cartList is null -->
-        <div v-else>
-          <h2 class="h2 text-white text-center">目前購物車沒有商品</h2>
-          <router-link
-            to="/products/productList/全部商品"
-            class="btn btn-primary btn-block mt-5 w-25 mx-auto"
-            @click.native="closeSiderbar"
-            >快去逛逛吧 <i class="fas fa-cart-plus"></i
-          ></router-link>
-        </div>
+      </div>
+      <!-- cartList not null -->
+      <div class="text-center" v-if="cartList.length != 0">
+        <router-link
+          class="btn btn-primary w-50 mt-5"
+          @click.native="closeSiderbar"
+          to="/order"
+          >去結帳</router-link
+        >
+      </div>
+      <!-- cartList is null -->
+      <div v-else>
+        <h2 class="h2 text-white text-center">目前購物車沒有商品</h2>
+        <router-link
+          to="/products/productList/全部商品"
+          class="btn btn-primary btn-block mt-5 w-25 mx-auto"
+          @click.native="closeSiderbar"
+          >快去逛逛吧 <i class="fas fa-cart-plus"></i
+        ></router-link>
       </div>
     </div>
   </div>
@@ -107,8 +109,8 @@ export default {
       vm.cartList.splice(itemIndex, 1);
       localStorage.setItem("cartList", JSON.stringify(vm.cartList));
       vm.getCartList();
+      this.$bus.$emit("navbarCartList:update");
       this.$bus.$emit("Alert:success", `${item.title}從購物車移除`);
-
       setTimeout(() => {
         this.$bus.$emit("isLoading", false);
       }, 1000);
@@ -138,11 +140,11 @@ export default {
     this.$bus.$on("signIn", (status) => {
       this.isSignIn = status;
     });
-    this.$bus.$on("reloadCartItem", () => {
-      this.getCartList();
-    });
+    // this.$bus.$on("reloadCartItem", () => {
+    //   this.getCartList();
+    // });
     //加入購物車
-    this.$bus.$on("addtoCart", (item, qty) => {
+    this.$bus.$on("sidebar:addtoCart", (item, qty) => {
       this.$bus.$emit("isLoading", true);
       const itemIndex = this.cartList.findIndex(
         (product) => product.id === item.id
@@ -155,6 +157,7 @@ export default {
       }
       localStorage.setItem("cartList", JSON.stringify(this.cartList));
       this.getCartList();
+      this.$bus.$emit("navbarCartList:update");
       this.$bus.$emit("Alert:success", `${item.title}成功加入購物車`);
       setTimeout(() => {
         this.$bus.$emit("isLoading", false);
@@ -164,8 +167,8 @@ export default {
   beforeDestroy() {
     this.$bus.$off("openSiderbar");
     this.$bus.$off("signIn");
-    this.$bus.$off("reloadCartItem");
-    this.$bus.$off("addtoCart");
+    // this.$bus.$off("reloadCartItem");
+    this.$bus.$off("sidebar:addtoCart");
   },
 };
 </script>

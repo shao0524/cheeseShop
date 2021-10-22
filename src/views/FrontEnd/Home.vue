@@ -2,7 +2,7 @@
   <div>
     <!-- banner -->
     <div
-      class="banner mb-5"
+      class="banner mb-5 homeImage"
       :style="{
         backgroundImage: `url(${require('image/home/banner-1.jpg')})`,
       }"

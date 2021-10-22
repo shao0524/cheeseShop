@@ -34,7 +34,7 @@
               v-for="item in filter(currentPage)"
               :key="item.id"
             >
-              <ProductCard :item="item" />
+              <ProductCard :item="item" :favorites="favorites" />
             </div>
           </div>
 
@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import Carousel from "components/Carousel.vue";
-import ProductCategory from "components/ProductCategory.vue";
-import ProductCard from "components/ProductCard.vue";
-import Pagination from "components/Pagination.vue";
+import Carousel from "components/fronted/Carousel.vue";
+import ProductCategory from "components/fronted/ProductCategory.vue";
+import ProductCard from "components/fronted/ProductCard.vue";
+import Pagination from "components/common/Pagination.vue";
 export default {
   components: {
     Carousel,
@@ -64,6 +64,7 @@ export default {
   },
   data() {
     return {
+      favorites: [],
       allProducts: [],
       searchText: "",
       pagination: {},
@@ -156,12 +157,15 @@ export default {
       vm.clickedCategory = category;
       vm.currentPage = 1;
     },
+    getFavorites() {
+      const vm = this;
+      vm.favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    },
   },
   computed: {
     categories() {
-      const vm = this;
       let categories = new Set();
-      vm.allProducts.forEach((item) => {
+      this.allProducts.forEach((item) => {
         categories.add(item.category);
       });
       return Array.from(categories);
@@ -169,6 +173,31 @@ export default {
   },
   created() {
     this.getAllProduct();
+    this.getFavorites();
+    this.$bus.$on("productList:add", (item) => {
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex === -1) {
+        this.favorites.push(item);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.$bus.$emit("navbarFavorites:update");
+      }
+    });
+    this.$bus.$on("productList:remove", (item) => {
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex !== -1) {
+        this.favorites.splice(itemIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.$bus.$emit("navbarFavorites:update");
+      }
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("productList:add");
+    this.$bus.$off("productList:remove");
   },
 };
 </script>

@@ -16,16 +16,17 @@
         ><i class="fas fa-arrow-left fa-2x"></i>
       </router-link>
       <section class="mt-3 favoriteWrapper mx-3 mx-md-0">
-        <ProductCard :productList="favorites" v-if="len" />
-
-        <h2 class="text-center" v-else>還沒有收藏的商品喔，快去找吧</h2>
-        <div class="text-center mt-5">
-          <router-link
-            to="/products/productList/全部商品"
-            class="btn btn-primary b"
-            >立刻行動</router-link
+        <div class="row" v-if="len">
+          <div
+            class="col-12 col-md-6 col-xl-4 mb-5"
+            v-for="item in favorites"
+            :key="item.id"
           >
+            <ProductCard :item="item" :favorites="favorites" />
+          </div>
         </div>
+
+        <h2 class="text-center" v-else>目前沒有收藏的商品</h2>
       </section>
     </div>
   </div>
@@ -47,32 +48,6 @@ export default {
       const vm = this;
       vm.favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     },
-    addFavorite(product) {
-      console.log("add");
-      const vm = this;
-      const itemIndex = vm.favorites.findIndex(
-        (item) => item.id === product.id
-      );
-      if (itemIndex === -1) {
-        vm.favorites.push(product);
-        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
-        vm.getFavorite();
-        vm.$bus.$emit("Alert:success", `${product.title} 已加入收藏`);
-      }
-    },
-    removeFavorite(product) {
-      const vm = this;
-      const itemIndex = vm.favorites.findIndex(
-        (item) => item.id === product.id
-      );
-      if (itemIndex !== -1) {
-        console.log("remove");
-        vm.favorites.splice(itemIndex, 1);
-        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
-        vm.getFavorite();
-        vm.$bus.$emit("Alert:error", `${product.title} 已取消收藏`);
-      }
-    },
   },
   computed: {
     len() {
@@ -84,21 +59,34 @@ export default {
   },
   created() {
     this.getFavorite();
-
     this.$bus.$on("favoritePage:update", () => {
       this.getFavorite();
     });
-
     this.$bus.$on("favorite:add", (item) => {
-      console.log(item);
-      this.addFavorite(item);
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex === -1) {
+        this.favorites.push(item);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.$bus.$emit("navbarFavorites:update");
+      }
     });
     this.$bus.$on("favorite:remove", (item) => {
-      this.removeFavorite(item);
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex !== -1) {
+        this.favorites.splice(itemIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.$bus.$emit("navbarFavorites:update");
+      }
     });
   },
   beforeDestroy() {
     this.$bus.$off("favoritePage:update");
+    this.$bus.$off("favorite:add");
+    this.$bus.$off("favorite:remove");
   },
 };
 </script>

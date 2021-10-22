@@ -4,6 +4,30 @@
   @include gradationColor(45deg, #DAC9A6, #D7B98E, #FFB11B, #FFC408, #F9BF45, #f3e294);
 }
 
+//home
+.homeImage{
+  max-width: 100%;
+  height:calc(100vh - 90px);
+  background-size: cover;
+  background-position: center 40%;
+  @include pad{
+    background-position: 20% center;
+  }
+  @include mobile{
+    background-position: 25% center;
+  }
+
+}
+
+//about
+.aboutImage{
+  max-width: 100%;
+  height:calc(100vh - 90px);
+  
+
+}
+
+
 //cartList badge
 .badge {
   position: absolute;
@@ -41,9 +65,10 @@
 }
 
 //event
-.eventWrapper {
+.Wrapper {
   min-height: calc(100vh - 389px);
 }
+
 
 // login
 .bgLogin {

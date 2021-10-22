@@ -218,7 +218,9 @@ export default {
       vm.$bus.$emit("openSiderbar", true);
     },
     closeNavbar() {
-      $(".navbar-toggler").click();
+      if ($(window).width() < 768) {
+        $(".navbar-toggler").click();
+      }
     },
     getCartListLen() {
       const vm = this;
@@ -250,7 +252,7 @@ export default {
     //檢查登入狀態
     this.checkLoginStatus();
     //購物車物件數量
-    this.$bus.$on("cartList:update", () => {
+    this.$bus.$on("navbarCartList:update", () => {
       this.getCartListLen();
     });
     this.$bus.$on("navbarFavorites:update", () => {
@@ -258,7 +260,7 @@ export default {
     });
   },
   beforeDestroy() {
-    this.$bus.$off("cartList:update");
+    this.$bus.$off("navbarCartList:update");
     this.$bus.$off("navbarFavorites:update");
   },
 };

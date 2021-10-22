@@ -22,7 +22,7 @@
               <li>原料：{{ product.material }}</li>
               <li>單位：1 {{ product.unit }}</li>
             </ul>
-            <FavoriteBtn :product="product" />
+            <FavoriteBtn :product="product" :is_follow="is_follow" />
           </div>
           <hr />
           <div class="mb-1 d-flex justify-content-between">
@@ -140,7 +140,7 @@
           <h3 class="h3 py-3">您可能感興趣的</h3>
         </div>
         <div class="mb-5">
-          <Swiper />
+          <Swiper :favorites="favorites" />
         </div>
       </div>
     </section>
@@ -160,6 +160,7 @@ export default {
     return {
       itemQty: "1",
       product: {},
+      favorites: [],
     };
   },
   methods: {
@@ -202,6 +203,21 @@ export default {
           vm.$bus.$emit("Alert:error", error);
         });
     },
+    getFavorites() {
+      const vm = this;
+      vm.favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    },
+  },
+  computed: {
+    is_follow() {
+      const itemIndex = this.favorites.findIndex(
+        (item) => item.id === this.product.id
+      );
+      if (itemIndex !== -1) {
+        return true;
+      }
+      return false;
+    },
   },
   watch: {
     $route: {
@@ -213,6 +229,34 @@ export default {
   },
   created() {
     this.getProduct(this.$route.params.productId);
+    this.getFavorites();
+    this.$bus.$on("productInfo:add", (item) => {
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex === -1) {
+        this.favorites.push(item);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.getFavorites();
+        this.$bus.$emit("navbarFavorites:update");
+      }
+    });
+
+    this.$bus.$on("productInfo:remove", (item) => {
+      const itemIndex = this.favorites.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex !== -1) {
+        this.favorites.splice(itemIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites));
+        this.getFavorites();
+        this.$bus.$emit("navbarFavorites:update");
+      }
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$on("productInfo:remove");
+    this.$bus.$off("productInfo:remove");
   },
 };
 </script>
