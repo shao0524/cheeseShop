@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import Carousel from "components/fronted/Carousel.vue";
-import ProductCategory from "components/fronted/ProductCategory.vue";
-import ProductCard from "components/fronted/ProductCard.vue";
-import Pagination from "components/common/Pagination.vue";
+import Carousel from "components/Carousel.vue";
+import ProductCategory from "components/ProductCategory.vue";
+import ProductCard from "components/ProductCard.vue";
+import Pagination from "components/Pagination.vue";
 export default {
   components: {
     Carousel,

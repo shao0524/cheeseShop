@@ -181,7 +181,7 @@ export default {
     return {
       cartItemLen: 0,
       favoritesLen: 0,
-      favorite: [],
+      favorites: [],
       has_favorite: false,
     };
   },
@@ -222,12 +222,12 @@ export default {
     },
     getCartListLen() {
       const vm = this;
-      const cartList = JSON.parse(localStorage.getItem("cartList"));
+      const cartList = JSON.parse(localStorage.getItem("cartList")) || [];
       vm.cartItemLen = cartList.length;
     },
     getFavoriteLen() {
       const vm = this;
-      const favorites = JSON.parse(localStorage.getItem("favorites"));
+      const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
       vm.favoritesLen = favorites.length;
     },
   },

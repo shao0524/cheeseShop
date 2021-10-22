@@ -16,15 +16,7 @@
         ><i class="fas fa-arrow-left fa-2x"></i>
       </router-link>
       <section class="mt-3 favoriteWrapper mx-3 mx-md-0">
-        <div class="row" v-if="len">
-          <div
-            class="col-12 col-md-6 col-xl-4 mb-5"
-            v-for="item in favorites"
-            :key="item.id"
-          >
-            <ProductCard :item="item" />
-          </div>
-        </div>
+        <ProductCard :productList="favorites" v-if="len" />
 
         <h2 class="text-center" v-else>還沒有收藏的商品喔，快去找吧</h2>
         <div class="text-center mt-5">
@@ -55,6 +47,32 @@ export default {
       const vm = this;
       vm.favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     },
+    addFavorite(product) {
+      console.log("add");
+      const vm = this;
+      const itemIndex = vm.favorites.findIndex(
+        (item) => item.id === product.id
+      );
+      if (itemIndex === -1) {
+        vm.favorites.push(product);
+        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
+        vm.getFavorite();
+        vm.$bus.$emit("Alert:success", `${product.title} 已加入收藏`);
+      }
+    },
+    removeFavorite(product) {
+      const vm = this;
+      const itemIndex = vm.favorites.findIndex(
+        (item) => item.id === product.id
+      );
+      if (itemIndex !== -1) {
+        console.log("remove");
+        vm.favorites.splice(itemIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
+        vm.getFavorite();
+        vm.$bus.$emit("Alert:error", `${product.title} 已取消收藏`);
+      }
+    },
   },
   computed: {
     len() {
@@ -69,6 +87,14 @@ export default {
 
     this.$bus.$on("favoritePage:update", () => {
       this.getFavorite();
+    });
+
+    this.$bus.$on("favorite:add", (item) => {
+      console.log(item);
+      this.addFavorite(item);
+    });
+    this.$bus.$on("favorite:remove", (item) => {
+      this.removeFavorite(item);
     });
   },
   beforeDestroy() {
