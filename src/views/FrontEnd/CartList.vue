@@ -16,10 +16,10 @@
       <tbody>
         <tr v-for="item in cartList" :key="item.id" class="text-center">
           <td width="150">
-            <img :src="item.imageUrl" class="table-imgSize" />
+            <img :src="item.product.imageUrl" class="table-imgSize" />
           </td>
           <td class="align-middle">
-            {{ item.title }}
+            {{ item.product.title }}
           </td>
           <td width="80" class="align-middle">
             <div class="d-flex justify-content-center">
@@ -46,10 +46,10 @@
             </div>
           </td>
           <td width="200" class="text-right align-middle">
-            {{ item.price | currency }}
+            {{ item.final_total | currency }}
           </td>
           <td width="200" class="text-right align-middle">
-            {{ (item.price * item.qty) | currency }}
+            {{ (item.qty * item.final_total) | currency }}
           </td>
           <td width="120" class="align-middle">
             <a href="#" @click="removeItem(item)" class="text-danger"
@@ -70,7 +70,7 @@
       </tfoot>
     </table>
     <!-- coupon input -->
-    <!-- <div class="form-inline justify-content-end mb-5">
+    <div class="form-inline justify-content-end mb-5">
       <input
         type="text"
         name="coupon"
@@ -82,7 +82,7 @@
       <button class="form-control btn btn-outline-danger" @click="useCoupon">
         使用優惠券
       </button>
-    </div> -->
+    </div>
     <!-- button -->
     <div class="d-flex justify-content-center mb-5">
       <router-link
@@ -148,58 +148,74 @@ export default {
   data() {
     return {
       cartList: [],
-      finalTotal: "",
+      couponCode: "",
+      couponUsed: false,
     };
   },
   methods: {
     getCartList() {
       const vm = this;
-      vm.cartList = JSON.parse(localStorage.getItem("cartList"));
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
+      this.$bus.$emit("isLoading", true);
+      this.$http.get(url).then((res) => {
+        if (res.data.success) {
+          vm.cartList = res.data.data.carts;
+          vm.finalTotal = res.data.data.final_total;
+          this.$bus.$emit("navbarCartList:update", vm.cartList.length);
+          this.$bus.$emit("isLoading", false);
+        }
+      });
     },
     removeItem(item) {
       const vm = this;
-      const itemIndex = vm.cartList.findIndex(
-        (product) => product.id === item.id
-      );
-      vm.cartList.splice(itemIndex, 1);
-      localStorage.setItem("cartList", JSON.stringify(vm.cartList));
+      this.$bus.$emit("isLoading", true);
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${item.id}`;
+      this.$http.delete(url).then((res) => {
+        if (res.data.success) {
+          vm.getCartList();
+        }
+      });
+      this.$bus.$emit("navbarCartList:update");
+      this.$bus.$emit("Alert:success", `${item.product.title}從購物車移除`);
+      this.$bus.$emit("isLoading", false);
     },
     itemQtyPlus(item) {
       const vm = this;
       const itemIndex = vm.cartList.findIndex(
         (product) => product.id === item.id
       );
-      vm.cartList[itemIndex].qty += 1;
-      localStorage.setItem("cartList", JSON.stringify(vm.cartList));
-      vm.getCartList();
+      if (itemIndex !== -1) {
+        vm.cartList[itemIndex].qty += 1;
+      }
     },
     itemQtyMinus(item) {
       const vm = this;
       const itemIndex = vm.cartList.findIndex(
         (product) => product.id === item.id
       );
-      vm.cartList[itemIndex].qty -= 1;
-      localStorage.setItem("cartList", JSON.stringify(vm.cartList));
-      vm.getCartList();
+      if (itemIndex !== -1) {
+        vm.cartList[itemIndex].qty -= 1;
+      }
     },
-    // useCoupon() {
-    //   const vm = this;
-    //   const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/coupon`;
-    //   vm.$bus.$emit("isLoading", true);
-    //   this.$http
-    //     .post(url, { data: { code: vm.couponCode } })
-    //     .then((res) => {
-    //       if (res.data.success) {
-    //         vm.getCartList();
-    //         vm.$bus.$emit("Alert:success", res.data.message);
-    //       }
-    //       vm.$bus.$emit("isLoading", false);
-    //     })
-    //     .catch((error) => {
-    //       vm.$bus.$emit("isLoading", false);
-    //       vm.$bus.$emit("Alert:error", error);
-    //     });
-    // },
+    useCoupon() {
+      const vm = this;
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/coupon`;
+      vm.$bus.$emit("isLoading", true);
+      this.$http
+        .post(url, { data: { code: vm.couponCode } })
+        .then((res) => {
+          if (res.data.success) {
+            vm.couponUsed = res.data.success;
+            vm.getCartList();
+          }
+          vm.$bus.$emit("Alert:success", "已套用優惠券");
+          vm.$bus.$emit("isLoading", false);
+        })
+        .catch((error) => {
+          vm.$bus.$emit("isLoading", false);
+          vm.$bus.$emit("Alert:error", error);
+        });
+    },
     openModal() {
       $("#postCartList").modal("show");
     },
@@ -208,36 +224,43 @@ export default {
     },
     postCartList() {
       const vm = this;
-      vm.$bus.$emit("isLoading", true);
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-      let data = {};
+      // 刪除原先購物車內容
       vm.cartList.forEach((item) => {
-        data = {
-          product_id: item.id,
-          qty: item.qty,
-        };
+        let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${item.id}`;
         this.$http
-          .post(url, { data })
+          .delete(url)
           .then(() => {})
           .catch((error) => {
-            vm.$bus.$emit("isLoading", false);
             vm.$bus.$emit("Alert:error", error);
           });
       });
-      vm.cartList = [];
-      localStorage.setItem("cartList", JSON.stringify(vm.cartList));
+      //送出新的cartList
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
+      vm.cartList.forEach((item) => {
+        this.$http
+          .post(url, {
+            data: {
+              product_id: item.product.id,
+              qty: item.qty,
+            },
+          })
+          .then(() => {})
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+      if (vm.couponUsed) {
+        vm.useCoupon();
+      }
       vm.closeModal();
-      setTimeout(() => {
-        vm.$bus.$emit("isLoading", false);
-        vm.$router.push("/order/customerinfo");
-      }, 1000);
+      vm.$router.push("/order/customerinfo");
     },
   },
   computed: {
     totalPrice() {
       let total = 0;
       this.cartList.forEach((item) => {
-        total += item.price * item.qty;
+        total += item.qty * item.final_total;
       });
       return total;
     },

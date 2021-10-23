@@ -221,10 +221,9 @@ export default {
         $(".navbar-toggler").click();
       }
     },
-    getCartListLen() {
+    getCartListLen(len) {
       const vm = this;
-      const cartList = JSON.parse(localStorage.getItem("cartList")) || [];
-      vm.cartItemLen = cartList.length;
+      vm.cartItemLen = len;
     },
     getFavoriteLen() {
       const vm = this;
@@ -245,14 +244,13 @@ export default {
   },
   created() {
     //取得購物車數量
-    this.getCartListLen();
     //取得我的最愛數量
     this.getFavoriteLen();
     //檢查登入狀態
     this.checkLoginStatus();
     //購物車物件數量
-    this.$bus.$on("navbarCartList:update", () => {
-      this.getCartListLen();
+    this.$bus.$on("navbarCartList:update", (len) => {
+      this.getCartListLen(len);
     });
     this.$bus.$on("navbarFavorites:update", () => {
       this.getFavoriteLen();
