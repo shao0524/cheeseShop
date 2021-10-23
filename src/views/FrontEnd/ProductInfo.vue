@@ -10,6 +10,13 @@
       <div class="row mt-3 mx-1 mx-md-0 mx-lg-0">
         <div class="col-12 col-md-6 col-lg-6 text-center px-0">
           <img :src="product.imageUrl" class="shadow-3 image" />
+          <button
+            class="btn btn-warning mt-5 mb-3 py-3 btn-block"
+            :disabled="itemQty > product.stock || itemQty <= 0"
+            @click="addCart(product, itemQty)"
+          >
+            <i class="fas fa-cart-plus mr-1"></i>加入購物車
+          </button>
         </div>
         <div class="col-12 col-md-6 col-lg-6 mt-3 mt-md-0">
           <div class="mb-1 ml-3">
@@ -71,30 +78,14 @@
                 </button>
               </div>
             </div>
-            <div class="col-12 col-md-12 col-lg-6 mb-3 mb-md-3">
-              <!-- addCart -->
-              <div class="text-center">
-                <button
-                  class="btn btn-warning"
-                  :disabled="itemQty > product.stock || itemQty <= 0"
-                  @click="addCart(product, itemQty)"
-                >
-                  <i class="fas fa-cart-plus mr-1"></i>加入購物車
-                </button>
-              </div>
+            <div class="col-12 col-md-12 col-lg-12 mb-3 mb-md-3">
+              <h5 class="pl-3 py-2 bg-secondary text-white text-left">
+                產品介紹
+              </h5>
+              <p class="text-justify lineHeight-2 pt-2 pb-2">
+                {{ product.content }}
+              </p>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="mb-3">
-            <h5 class="pl-3 py-2 bg-secondary text-white text-left">
-              產品介紹
-            </h5>
-            <p class="text-justify lineHeight-2 pt-2 pb-2">
-              {{ product.content }}
-            </p>
           </div>
         </div>
       </div>
@@ -255,7 +246,7 @@ export default {
     });
   },
   beforeDestroy() {
-    this.$bus.$on("productInfo:remove");
+    this.$bus.$off("productInfo:remove");
     this.$bus.$off("productInfo:remove");
   },
 };

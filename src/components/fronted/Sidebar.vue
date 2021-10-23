@@ -8,12 +8,9 @@
         ></a>
       </div>
       <!-- main -->
-      <div class="offConvas-body" v-if="cartList.length != 0">
+      <div class="offConvas-body" v-if="cartList.length > 0">
         <div class="mb-3 offConvas-table">
-          <table
-            class="table text-white w-75 mx-auto"
-            v-if="cartList.length != 0"
-          >
+          <table class="table text-white w-75 mx-auto">
             <thead>
               <tr>
                 <th class="text-center" width="80">#</th>
@@ -27,18 +24,20 @@
               <tr v-for="item in cartList" :key="item.id">
                 <td width="80">
                   <img
-                    :src="item.imageUrl"
-                    :alt="item.title"
+                    :src="item.product.imageUrl"
+                    :alt="item.product.title"
                     width="50"
                     height="50"
                   />
                 </td>
-                <td class="text-center align-middle">{{ item.title }}</td>
+                <td class="text-center align-middle">
+                  {{ item.product.title }}
+                </td>
                 <td class="text-center align-middle" width="80">
                   {{ item.qty }}
                 </td>
                 <td class="text-right align-middle" width="120">
-                  {{ (item.price * item.qty) | currency }}
+                  {{ item.total | currency }}
                 </td>
                 <td class="text-center align-middle" width="80">
                   <button class="btn text-white" @click="removeItem(item)">
@@ -63,7 +62,7 @@
         </div>
       </div>
       <!-- cartList not null -->
-      <div class="text-center" v-if="cartList.length != 0">
+      <div class="text-center" v-if="cartList.length > 0">
         <router-link
           class="btn btn-primary w-50 mt-5"
           @click.native="closeSiderbar"
@@ -92,41 +91,39 @@ export default {
       isclick: false,
       cartList: [],
       isSignIn: false,
+      finalTotal: 0,
     };
   },
   methods: {
     getCartList() {
       const vm = this;
-      vm.cartList = JSON.parse(localStorage.getItem("cartList")) || [];
-      this.$bus.$emit("cartList:update");
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
+      this.$bus.$emit("isLoading", true);
+      this.$http.get(url).then((res) => {
+        if (res.data.success) {
+          vm.cartList = res.data.data.carts;
+          vm.finalTotal = res.data.data.final_total;
+          this.$bus.$emit("navbarCartList:update", vm.cartList.length);
+          this.$bus.$emit("isLoading", false);
+        }
+      });
     },
     removeItem(item) {
       const vm = this;
       this.$bus.$emit("isLoading", true);
-      const itemIndex = vm.cartList.findIndex(
-        (product) => product.id === item.id
-      );
-      vm.cartList.splice(itemIndex, 1);
-      localStorage.setItem("cartList", JSON.stringify(vm.cartList));
-      vm.getCartList();
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${item.id}`;
+      this.$http.delete(url).then((res) => {
+        if (res.data.success) {
+          vm.getCartList();
+        }
+      });
       this.$bus.$emit("navbarCartList:update");
-      this.$bus.$emit("Alert:success", `${item.title}從購物車移除`);
-      setTimeout(() => {
-        this.$bus.$emit("isLoading", false);
-      }, 1000);
+      this.$bus.$emit("Alert:success", `${item.product.title}從購物車移除`);
+      this.$bus.$emit("isLoading", false);
     },
     closeSiderbar() {
       const vm = this;
       vm.isclick = false;
-    },
-  },
-  computed: {
-    finalTotal() {
-      let total = 0;
-      this.cartList.forEach((item) => {
-        total += parseInt(item.price) * item.qty;
-      });
-      return total;
     },
   },
   created() {
@@ -140,34 +137,73 @@ export default {
     this.$bus.$on("signIn", (status) => {
       this.isSignIn = status;
     });
-    // this.$bus.$on("reloadCartItem", () => {
-    //   this.getCartList();
-    // });
     //加入購物車
     this.$bus.$on("sidebar:addtoCart", (item, qty) => {
-      this.$bus.$emit("isLoading", true);
       const itemIndex = this.cartList.findIndex(
-        (product) => product.id === item.id
+        (product) => product.product.id === item.id
       );
       if (itemIndex === -1) {
-        item.qty = qty;
-        this.cartList.push(item);
+        //不存在
+        let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
+        this.$bus.$emit("isLoading", true);
+        this.$http
+          .post(url, {
+            data: {
+              product_id: item.id,
+              qty,
+            },
+          })
+          .then((res) => {
+            if (res.data.success) {
+              this.getCartList();
+              this.$bus.$emit("Alert:success", `${item.title}成功加入購物車`);
+              this.$bus.$emit("isLoading", false);
+            }
+          })
+          .catch((error) => {
+            this.$bus.$emit("Alert:error", error);
+          });
       } else {
-        this.cartList[itemIndex].qty++;
+        // 存在
+        const itemQty = this.cartList[itemIndex].qty + qty;
+        console.log(item.id);
+        let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${this.cartList[itemIndex].id}`;
+        this.$bus.$emit("isLoading", true);
+        //先刪除
+        this.$http
+          .delete(url)
+          .then((res) => {
+            if (res.data.success) {
+              let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
+              this.$http
+                .post(url, {
+                  data: {
+                    product_id: item.id,
+                    qty: itemQty,
+                  },
+                })
+                .then((res) => {
+                  if (res.data.success) {
+                    this.getCartList();
+                    this.$bus.$emit("Alert:success", `${item.title}已修改數量`);
+                    this.$bus.$emit("isLoading", false);
+                  }
+                });
+            }
+          })
+          .catch((error) => {
+            this.$bus.$emit("Alert:error", error);
+          });
       }
-      localStorage.setItem("cartList", JSON.stringify(this.cartList));
+    });
+    this.$bus.$on("sidebar:cleanCart", () => {
       this.getCartList();
-      this.$bus.$emit("navbarCartList:update");
-      this.$bus.$emit("Alert:success", `${item.title}成功加入購物車`);
-      setTimeout(() => {
-        this.$bus.$emit("isLoading", false);
-      }, 1000);
     });
   },
   beforeDestroy() {
     this.$bus.$off("openSiderbar");
     this.$bus.$off("signIn");
-    // this.$bus.$off("reloadCartItem");
+    this.$bus.$off("sidebar:cleanCart");
     this.$bus.$off("sidebar:addtoCart");
   },
 };
