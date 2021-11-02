@@ -57,7 +57,6 @@
     <div class="my-3">
       <Pagination :pagination="pagination" @changePage="changePage" />
     </div>
-
     <!-- create & edit Modal -->
     <div
       class="modal fade"

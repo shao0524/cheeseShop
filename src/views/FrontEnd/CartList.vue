@@ -67,22 +67,34 @@
             <h5 class="text-danger">{{ totalPrice | currency }}</h5>
           </td>
         </tr>
+        <tr>
+          <td colspan="6" class="align-middle text-right">
+            <div class="form-inline">
+              <input
+                type="text"
+                name="coupon"
+                id="coupon"
+                class="form-control mb-3 mb-md-0 mb-lg-0"
+                placeholder="請輸入優惠券代碼"
+                v-model="couponCode"
+              />
+              <button
+                class="form-control btn btn-outline-danger"
+                @click="useCoupon"
+                :disabled="!couponCode"
+              >
+                使用優惠券
+              </button>
+              <span class="text-danger ml-3" v-if="errorMessage">{{
+                errorMessage
+              }}</span>
+            </div>
+          </td>
+        </tr>
       </tfoot>
     </table>
     <!-- coupon input -->
-    <div class="form-inline justify-content-end mb-5">
-      <input
-        type="text"
-        name="coupon"
-        id="coupon"
-        class="form-control mb-3 mb-md-0 mb-lg-0"
-        placeholder="請輸入優惠券代碼"
-        v-model="couponCode"
-      />
-      <button class="form-control btn btn-outline-danger" @click="useCoupon">
-        使用優惠券
-      </button>
-    </div>
+
     <!-- button -->
     <div class="d-flex justify-content-center mb-5">
       <router-link
@@ -150,6 +162,7 @@ export default {
       cartList: [],
       couponCode: "",
       couponUsed: false,
+      errorMessage: "",
     };
   },
   methods: {
@@ -199,22 +212,36 @@ export default {
     },
     useCoupon() {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/coupon`;
-      vm.$bus.$emit("isLoading", true);
-      this.$http
-        .post(url, { data: { code: vm.couponCode } })
-        .then((res) => {
-          if (res.data.success) {
-            vm.couponUsed = res.data.success;
-            vm.getCartList();
-          }
-          vm.$bus.$emit("Alert:success", "已套用優惠券");
-          vm.$bus.$emit("isLoading", false);
-        })
-        .catch((error) => {
-          vm.$bus.$emit("isLoading", false);
-          vm.$bus.$emit("Alert:error", error);
-        });
+      if (vm.codeValidate(vm.couponCode)) {
+        const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/coupon`;
+        vm.$bus.$emit("isLoading", true);
+        this.$http
+          .post(url, { data: { code: vm.couponCode } })
+          .then((res) => {
+            console.log(res);
+            if (res.data.success) {
+              vm.couponUsed = res.data.success;
+              vm.getCartList();
+              vm.errorMessage = "";
+              vm.$bus.$emit("Alert:success", "已套用優惠券");
+            } else {
+              vm.errorMessage = res.data.message;
+              vm.couponCode = "";
+            }
+            vm.$bus.$emit("isLoading", false);
+          })
+          .catch((error) => {
+            vm.$bus.$emit("isLoading", false);
+            vm.$bus.$emit("Alert:error", error);
+          });
+      } else {
+        vm.errorMessage = "輸入格式錯誤！！";
+        vm.couponCode = "";
+      }
+    },
+    codeValidate(code) {
+      const rule = /^[a-zA-Z0-9]{8,16}$/;
+      return rule.test(code);
     },
     openModal() {
       $("#postCartList").modal("show");
@@ -256,6 +283,7 @@ export default {
       vm.$router.push("/order/customerinfo");
     },
   },
+
   computed: {
     totalPrice() {
       let total = 0;
