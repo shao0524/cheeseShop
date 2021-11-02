@@ -8,7 +8,7 @@
       <img
         :src="item.imageUrl"
         class="image"
-        style="height: 200px; width: 100%"
+        style="height: auto; width: 100%"
         :alt="item.title"
       />
       <router-link
@@ -18,10 +18,10 @@
       ></router-link>
     </div>
     <div class="card-body">
-      <h5 class="card-title text-center my-1 my-lg-2 text-primary">
+      <h5 class="card-title text-center my-1 my-lg-2">
         {{ item.title }}
       </h5>
-      <h5 class="card-title text-center my-1 my-lg-2 text-primary">
+      <h5 class="card-title text-center my-1 my-lg-2">
         {{ item.titleEng }}
       </h5>
       <div class="mb-3 d-flex card-text justify-content-around">
@@ -41,7 +41,7 @@
       <div class="text-center">
         <div class="d-flex justify-content-around">
           <FavoriteBtn :product="item" :is_follow="is_follow" />
-          <button class="btn btn-outline-info h6" @click="addCart(item)">
+          <button class="btn btn-outline-primary h6" @click="clickEvent(item)">
             <i class="fas fa-cart-plus"></i> 加入購物車
           </button>
         </div>
@@ -54,6 +54,11 @@
 import FavoriteBtn from "components/fronted/FavoriteBtn.vue";
 export default {
   props: ["item", "favorites"],
+  data: function () {
+    return {
+      isClick: true,
+    };
+  },
   components: {
     FavoriteBtn,
   },
@@ -61,6 +66,18 @@ export default {
     addCart(item, qty = 1) {
       const vm = this;
       vm.$bus.$emit("sidebar:addtoCart", item, qty);
+    },
+    clickEvent(item) {
+      const vm = this;
+      if (vm.isClick) {
+        vm.isClick = false;
+        vm.addCart(item);
+        setTimeout(() => {
+          vm.isClick = true;
+        }, 1500);
+      } else {
+        vm.$bus.$emit("Alert:error", "新增失敗，請不要連續點擊");
+      }
     },
   },
   computed: {

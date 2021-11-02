@@ -3,7 +3,7 @@
   box-sizing: border-box;
 }
 body {
-  background: rgba(250, 214, 137,.1);
+  background: rgba(221, 204, 166, 0.1);
   font-family: Andale Mono, monospace;
 }
 h1,
@@ -43,4 +43,10 @@ input[type="number"] {
 
 #number {
   width: 5em;
+}
+
+button{
+  &:disabled{
+    cursor: not-allowed;
+  }
 }

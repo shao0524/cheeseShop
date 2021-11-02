@@ -69,7 +69,7 @@
       </div>
     </section>
     <!-- section2 -->
-    <section class="pb-5" style="background-color: #17a2b84d">
+    <section class="pb-5" style="background-color: #bdc0ba">
       <div class="container">
         <div
           class="row mb-5 pt-5 mx-3"

@@ -11,7 +11,7 @@
         <div class="col-12 col-md-6 col-lg-6 text-center px-0">
           <img :src="product.imageUrl" class="shadow-3 image" />
           <button
-            class="btn btn-warning mt-5 mb-3 py-3 btn-block"
+            class="btn btn-outline-primary mt-5 mb-3 py-3 btn-block"
             :disabled="itemQty > product.stock || itemQty <= 0"
             @click="addCart(product, itemQty)"
           >
@@ -92,11 +92,11 @@
     </div>
 
     <!-- notice -->
-    <section style="background-color: #17a2b84d">
+    <section style="background-color: #bdc0ba">
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-8">
-            <div class="py-3 mt-3">
+            <div class="py-3 mt-3 text-white">
               <h3>注意事項：</h3>
               <ul class="font-weight-bolder">
                 <li class="lineHeight-2">
@@ -128,7 +128,7 @@
     <section>
       <div class="container">
         <div class="text-center mt-3">
-          <h3 class="h3 py-3">您可能感興趣的</h3>
+          <h3 class="py-3">您可能感興趣的</h3>
         </div>
         <div class="mb-5">
           <Swiper :favorites="favorites" />

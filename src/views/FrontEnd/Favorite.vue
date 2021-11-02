@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="wrapper">
     <!-- banner -->
-    <div class="container mt-3">
+    <div class="container pt-3">
       <div class="position-relative">
         <img
           src="~image/favorite/favoriteBanner.jpg"
@@ -26,7 +26,14 @@
           </div>
         </div>
 
-        <h2 class="text-center" v-else>目前沒有收藏的商品</h2>
+        <div class="text-center mt-3" v-else>
+          <h2 class="text-center">目前沒有收藏的商品</h2>
+          <router-link
+            class="btn btn-primary mt-3"
+            to="/products/productList/全部商品"
+            >去逛逛吧
+          </router-link>
+        </div>
       </section>
     </div>
   </div>

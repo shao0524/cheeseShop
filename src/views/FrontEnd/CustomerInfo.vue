@@ -2,7 +2,7 @@
   <div class="container">
     <h2 class="text-center mb-5">填寫訂購人資訊</h2>
     <!-- customerData form -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-5">
       <div class="col-10 col-md-10 col-lg-6">
         <ValidationObserver v-slot="{ invalid }">
           <form @submit.prevent="submitData">
@@ -94,17 +94,13 @@
               ></textarea>
             </div>
             <!-- button -->
-            <div class="form-inline justify-content-center mb-3">
+            <div class="form-inline justify-content-end mb-3">
               <router-link
-                class="btn btn-outline-secondary mx-3 mx-md-5 mx-lg-5"
+                class="btn btn-outline-secondary mr-3"
                 to="/order/cartlist"
                 >返回上一頁</router-link
               >
-              <button
-                class="btn btn-primary mx-3 mx-md-5 mx-lg-5"
-                type="submit"
-                :disabled="invalid"
-              >
+              <button class="btn btn-primary" type="submit" :disabled="invalid">
                 完成訂單
               </button>
             </div>

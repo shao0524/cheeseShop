@@ -74,9 +74,7 @@
                   src="~image/home/softCheese.jpg"
                   alt="軟質起司"
                 />
-                <div class="itemBox-mask">
-                  <h5>軟質起司</h5>
-                </div>
+                <h5 class="mt-3 text-center">軟質起司</h5>
               </div>
             </router-link>
           </div>
@@ -88,9 +86,7 @@
                   src="~image/home/hardCheese.jpg"
                   alt="硬質起司"
                 />
-                <div class="itemBox-mask">
-                  <h5>硬質起司</h5>
-                </div>
+                <h5 class="mt-3 text-center">硬質起司</h5>
               </div>
             </router-link>
           </div>
@@ -102,9 +98,7 @@
                   src="~image/home/halfhardCheese.jpg"
                   alt="半硬質起司"
                 />
-                <div class="itemBox-mask">
-                  <h5>半硬質起司</h5>
-                </div>
+                <h5 class="mt-3 text-center">半硬質起司</h5>
               </div>
             </router-link>
           </div>
@@ -116,7 +110,7 @@
                   src="~image/home/blueCheese.jpg"
                   alt="藍紋起司"
                 />
-                <div class="itemBox-mask"><h5>藍紋起司</h5></div>
+                <h5 class="mt-3 text-center">藍紋起司</h5>
               </div>
             </router-link>
           </div>
@@ -128,9 +122,7 @@
                   src="~image/home/pizzaCheese.jpg"
                   alt="紡絲乳酪"
                 />
-                <div class="itemBox-mask">
-                  <h5>紡絲乳酪</h5>
-                </div>
+                <h5 class="mt-3 text-center">紡絲乳酪</h5>
               </div>
             </router-link>
           </div>
@@ -142,7 +134,7 @@
                   src="~image/home/shreddedCheese.jpg"
                   alt="起司絲"
                 />
-                <div class="itemBox-mask"><h5>起司絲</h5></div>
+                <h5 class="mt-3 text-center">起司絲</h5>
               </div>
             </router-link>
           </div>
@@ -154,9 +146,7 @@
                   src="~image/home/sliceCheese.jpg"
                   alt="起司片"
                 />
-                <div class="itemBox-mask">
-                  <h5>起司片</h5>
-                </div>
+                <h5 class="mt-3 text-center">起司片</h5>
               </div>
             </router-link>
           </div>
@@ -168,9 +158,8 @@
                   src="~image/home/tiramisu.jpg"
                   alt="甜點常用起司"
                 />
-                <div class="itemBox-mask">
-                  <h5>甜點常用起司</h5>
-                </div>
+
+                <h5 class="mt-3 text-center">甜點常用起司</h5>
               </div>
             </router-link>
           </div>

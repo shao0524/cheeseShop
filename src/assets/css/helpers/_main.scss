@@ -23,8 +23,6 @@
 .aboutImage{
   max-width: 100%;
   height:calc(100vh - 90px);
-  
-
 }
 
 
@@ -41,8 +39,8 @@
   width: 100%;
 }
 
-.favoriteWrapper {
-  min-height: calc(100vh - 370px);
+.wrapper {
+  min-height: calc(100vh - 325px);
 }
 
 .favoriteOffset {
@@ -64,10 +62,7 @@
 
 }
 
-//event
-.Wrapper {
-  min-height: calc(100vh - 389px);
-}
+
 
 
 // login

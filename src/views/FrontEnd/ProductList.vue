@@ -1,49 +1,51 @@
 <template>
   <div>
     <!-- Carousel -->
-    <Carousel />
-    <div class="mt-3 mt-lg-3">
-      <div class="row mx-1">
-        <!-- productCategory -->
-        <div class="col-12 col-md-10 col-xl-3 mx-auto">
-          <ProductCategory
-            :categories="categories"
-            @changeCategory="changeCategory"
-          />
-        </div>
-        <!-- productCard -->
-        <div class="col-12 col-md-10 col-xl-9 mx-auto" id="Card">
-          <!-- search -->
-          <div class="mb-3 mt-3">
-            <div class="form-row justify-content-center">
-              <div class="col-12 col-md-6 col-lg-6">
-                <input
-                  type="text"
-                  id="search"
-                  class="form-control w-100 mx-auto"
-                  placeholder="請輸入商品名稱"
-                  v-model="searchText"
-                />
+    <div class="container">
+      <Carousel />
+      <div class="mt-3 mt-lg-3">
+        <div class="row mx-1">
+          <!-- productCategory -->
+          <div class="col-12 col-md-10 col-xl-3 mx-auto">
+            <ProductCategory
+              :categories="categories"
+              @changeCategory="changeCategory"
+            />
+          </div>
+          <!-- productCard -->
+          <div class="col-12 col-md-10 col-xl-9 mx-auto" id="Card">
+            <!-- search -->
+            <div class="mb-3 mt-3">
+              <div class="form-row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-6">
+                  <input
+                    type="text"
+                    id="search"
+                    class="form-control w-100 mx-auto"
+                    placeholder="請輸入商品名稱"
+                    v-model="searchText"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <!-- card -->
-          <div class="row mx-1 mx-lg-5">
-            <div
-              class="col-12 col-md-6 col-xl-4 mb-5"
-              v-for="item in filter(currentPage)"
-              :key="item.id"
-            >
-              <ProductCard :item="item" :favorites="favorites" />
+            <!-- card -->
+            <div class="row">
+              <div
+                class="col-12 col-md-6 col-xl-4 mb-5"
+                v-for="item in filter(currentPage)"
+                :key="item.id"
+              >
+                <ProductCard :item="item" :favorites="favorites" />
+              </div>
             </div>
-          </div>
 
-          <!-- pagination -->
-          <Pagination
-            class="mb-3"
-            :pagination="pagination"
-            @changePage="changePage"
-          />
+            <!-- pagination -->
+            <Pagination
+              class="mb-3"
+              :pagination="pagination"
+              @changePage="changePage"
+            />
+          </div>
         </div>
       </div>
     </div>

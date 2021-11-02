@@ -7,10 +7,10 @@
         <tr class="text-center">
           <th width="150">#</th>
           <th>品項</th>
-          <th width="80">數量</th>
-          <th width="200">售價</th>
-          <th width="200">小計</th>
-          <th width="120">刪除</th>
+          <th width="200">數量</th>
+          <th width="120">售價</th>
+          <th width="120">小計</th>
+          <th width="80">刪除</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,7 @@
           <td class="align-middle">
             {{ item.product.title }}
           </td>
-          <td width="80" class="align-middle">
+          <td width="200" class="align-middle">
             <div class="d-flex justify-content-center">
               <button
                 class="btn btn-outline-secondary rounded-circle"
@@ -45,14 +45,14 @@
               </button>
             </div>
           </td>
-          <td width="200" class="text-right align-middle">
+          <td width="120" class="text-right align-middle">
             {{ item.final_total | currency }}
           </td>
-          <td width="200" class="text-right align-middle">
+          <td width="120" class="text-right align-middle">
             {{ (item.qty * item.final_total) | currency }}
           </td>
-          <td width="120" class="align-middle">
-            <a href="#" @click="removeItem(item)" class="text-danger"
+          <td width="80" class="align-middle">
+            <a href="#" @click.prevent="removeItem(item)" class="text-danger"
               ><i class="fa fa-trash"></i
             ></a>
           </td>
@@ -96,15 +96,13 @@
     <!-- coupon input -->
 
     <!-- button -->
-    <div class="d-flex justify-content-center mb-5">
-      <router-link
-        class="btn btn-outline-secondary mx-3 mx-md-5 mx-lg-5"
-        to="$router.go(-1)"
+    <div class="d-flex justify-content-end mb-5">
+      <router-link class="btn btn-outline-secondary mr-3" to="$router.go(-1)"
         >再去選購</router-link
       >
       <button
         type="button"
-        class="btn btn-primary mx-md-5 mx-3 mx-lg-5"
+        class="btn btn-primary"
         to="/order/customerinfo"
         @click="openModal"
       >

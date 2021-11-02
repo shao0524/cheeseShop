@@ -476,7 +476,7 @@ export default {
       let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/admin/product`;
       let method = "post";
       if (!vm.isNew) {
-        url = `${process.env.APIPATH}/api/${process.env.USER}/admin/product/${vm.tempProduct.id}`;
+        url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/admin/product/${vm.tempProduct.id}`;
         method = "put";
       }
       if (!vm.tempProduct.price) {

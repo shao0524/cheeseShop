@@ -98,13 +98,13 @@ export default {
     getCartList() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-      this.$bus.$emit("isLoading", true);
-      this.$http.get(url).then((res) => {
+      vm.$bus.$emit("isLoading", true);
+      vm.$http.get(url).then((res) => {
         if (res.data.success) {
           vm.cartList = res.data.data.carts;
           vm.finalTotal = res.data.data.final_total;
-          this.$bus.$emit("navbarCartList:update", vm.cartList.length);
-          this.$bus.$emit("isLoading", false);
+          vm.$bus.$emit("navbarCartList:update", vm.cartList.length);
+          vm.$bus.$emit("isLoading", false);
         }
       });
     },
@@ -142,10 +142,11 @@ export default {
       const itemIndex = this.cartList.findIndex(
         (product) => product.product.id === item.id
       );
+
+      console.log(itemIndex);
       if (itemIndex === -1) {
         //不存在
         let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-        this.$bus.$emit("isLoading", true);
         this.$http
           .post(url, {
             data: {
@@ -157,7 +158,6 @@ export default {
             if (res.data.success) {
               this.getCartList();
               this.$bus.$emit("Alert:success", `${item.title}成功加入購物車`);
-              this.$bus.$emit("isLoading", false);
             }
           })
           .catch((error) => {
@@ -166,14 +166,16 @@ export default {
       } else {
         // 存在
         const itemQty = this.cartList[itemIndex].qty + qty;
-        console.log(item.id);
         let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${this.cartList[itemIndex].id}`;
-        this.$bus.$emit("isLoading", true);
         //先刪除
         this.$http
           .delete(url)
           .then((res) => {
-            if (res.data.success) {
+            return res.data.success;
+          })
+          .then((res) => {
+            console.log(res);
+            if (res) {
               let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
               this.$http
                 .post(url, {
@@ -184,9 +186,8 @@ export default {
                 })
                 .then((res) => {
                   if (res.data.success) {
-                    this.getCartList();
                     this.$bus.$emit("Alert:success", `${item.title}已修改數量`);
-                    this.$bus.$emit("isLoading", false);
+                    this.getCartList();
                   }
                 });
             }
