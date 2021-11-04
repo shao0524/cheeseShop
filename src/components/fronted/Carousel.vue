@@ -5,7 +5,7 @@
       class="carousel slide carousel-fade"
       data-ride="carousel"
     >
-      <div class="carousel-inner" style="max-height: 50vh">
+      <div class="carousel-inner" style="max-height: 500px">
         <div class="carousel-item active">
           <img
             src="~image/carousel/1.jpg"

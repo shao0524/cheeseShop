@@ -41,7 +41,7 @@
       <div class="text-center">
         <div class="d-flex justify-content-around">
           <FavoriteBtn :item="item" :is_follow="is_follow" />
-          <button class="btn btn-outline-primary h6" @click="clickEvent(item)">
+          <button class="btn btn-outline-primary h6" @click="addCart(item)">
             <i class="fas fa-cart-plus"></i> 加入購物車
           </button>
         </div>
@@ -66,18 +66,6 @@ export default {
     addCart(item, qty = 1) {
       const vm = this;
       vm.$bus.$emit("sidebar:addtoCart", item, qty);
-    },
-    clickEvent(item) {
-      const vm = this;
-      if (vm.isClick) {
-        vm.isClick = false;
-        vm.addCart(item);
-        setTimeout(() => {
-          vm.isClick = true;
-        }, 1500);
-      } else {
-        vm.$bus.$emit("Alert:error", "新增失敗，請不要連續點擊");
-      }
     },
   },
   computed: {

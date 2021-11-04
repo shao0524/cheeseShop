@@ -92,7 +92,7 @@
     </div>
 
     <!-- notice -->
-    <section style="background-color: #bdc0ba">
+    <section style="background-color: #d0d0d0">
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-8">
@@ -174,25 +174,22 @@ export default {
     },
     addCart(item, qty) {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
       vm.$bus.$emit("isLoading", true);
-      const cart = {
-        product_id: item.id,
-        qty: qty,
-      };
-      this.$http
-        .post(url, { data: cart })
-        .then((res) => {
-          if (res.data.success) {
-            vm.$bus.$emit("addItem:success");
-            vm.$bus.$emit("Alert:success", `${item.title} 已成功加入購物車`);
-          }
-          vm.$bus.$emit("isLoading", false);
-        })
-        .catch((error) => {
-          vm.$bus.$emit("isLoading", false);
-          vm.$bus.$emit("Alert:error", error);
-        });
+      let cartList = JSON.parse(localStorage.getItem("cartList"));
+      const itemIndex = cartList.findIndex((product) => product.id === item.id);
+      if (itemIndex === -1) {
+        item.qty = qty;
+        cartList.push(item);
+      } else {
+        cartList[itemIndex].qty = parseInt(cartList[itemIndex].qty) + qty;
+      }
+      localStorage.setItem("cartList", JSON.stringify(cartList));
+      vm.itemQty = 1;
+      setTimeout(() => {
+        vm.$bus.$emit("isLoading", false);
+      }, 1000);
+      vm.$bus.$emit("sidebar:update");
+      vm.$bus.$emit("navbarCartList:update");
     },
     getFavorites() {
       const vm = this;
