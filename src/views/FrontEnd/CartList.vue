@@ -16,10 +16,10 @@
       <tbody>
         <tr v-for="item in cartList" :key="item.id" class="text-center">
           <td width="150">
-            <img :src="item.product.imageUrl" class="table-imgSize" />
+            <img :src="item.imageUrl" class="table-imgSize" />
           </td>
           <td class="align-middle">
-            {{ item.product.title }}
+            {{ item.title }}
           </td>
           <td width="200" class="align-middle">
             <div class="d-flex justify-content-center">
@@ -35,6 +35,7 @@
                 id="number"
                 class="border-0 text-center form-control bg-transparent"
                 v-model="item.qty"
+                @input="changeQty(item, item.qty)"
               />
               <button
                 class="btn btn-outline-secondary rounded-circle"
@@ -46,10 +47,10 @@
             </div>
           </td>
           <td width="120" class="text-right align-middle">
-            {{ item.final_total | currency }}
+            {{ item.price | currency }}
           </td>
           <td width="120" class="text-right align-middle">
-            {{ (item.qty * item.final_total) | currency }}
+            {{ (item.price * item.qty) | currency }}
           </td>
           <td width="80" class="align-middle">
             <a href="#" @click.prevent="removeItem(item)" class="text-danger"
@@ -60,43 +61,18 @@
       </tbody>
       <tfoot>
         <tr class="text-right">
-          <td colspan="5">
+          <td colspan="4">
             <h5>總計：</h5>
           </td>
-          <td>
+          <td colspan="2" class="text-right">
             <h5 class="text-danger">{{ totalPrice | currency }}</h5>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="6" class="align-middle text-right">
-            <div class="form-inline">
-              <input
-                type="text"
-                name="coupon"
-                id="coupon"
-                class="form-control mb-3 mb-md-0 mb-lg-0"
-                placeholder="請輸入優惠券代碼"
-                v-model="couponCode"
-              />
-              <button
-                class="form-control btn btn-outline-danger"
-                @click="useCoupon"
-                :disabled="!couponCode"
-              >
-                使用優惠券
-              </button>
-              <span class="text-danger ml-3" v-if="errorMessage">{{
-                errorMessage
-              }}</span>
-            </div>
           </td>
         </tr>
       </tfoot>
     </table>
-    <!-- coupon input -->
 
     <!-- button -->
-    <div class="d-flex justify-content-end mb-5">
+    <div class="d-flex justify-content-end mb-5 mr-0 mr-md-3">
       <router-link class="btn btn-outline-secondary mr-3" to="$router.go(-1)"
         >再去選購</router-link
       >
@@ -158,37 +134,50 @@ export default {
   data() {
     return {
       cartList: [],
-      couponCode: "",
-      couponUsed: false,
-      errorMessage: "",
     };
   },
   methods: {
     getCartList() {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
       this.$bus.$emit("isLoading", true);
-      this.$http.get(url).then((res) => {
-        if (res.data.success) {
-          vm.cartList = res.data.data.carts;
-          vm.finalTotal = res.data.data.final_total;
-          this.$bus.$emit("navbarCartList:update", vm.cartList.length);
-          this.$bus.$emit("isLoading", false);
-        }
-      });
+      vm.cartList = JSON.parse(localStorage.getItem("cartList"));
+      setTimeout(() => {
+        this.$bus.$emit("isLoading", false);
+      }, 1000);
     },
     removeItem(item) {
       const vm = this;
       this.$bus.$emit("isLoading", true);
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${item.id}`;
-      this.$http.delete(url).then((res) => {
-        if (res.data.success) {
-          vm.getCartList();
+      const itemIndex = vm.cartList.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex !== -1) {
+        vm.cartList.splice(itemIndex, 1);
+        localStorage.setItem("cartList", JSON.stringify(vm.cartList));
+        vm.getCartList();
+        //同步購物車數據
+        vm.$bus.$emit("sidebar:update");
+        vm.$bus.$emit("navbarCartList:update");
+      }
+      setTimeout(() => {
+        this.$bus.$emit("isLoading", false);
+      }, 1000);
+    },
+    changeQty(item, qty) {
+      const vm = this;
+      const itemIndex = vm.cartList.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex !== -1) {
+        if (qty > 0 && qty <= item.stock) {
+          vm.cartList[itemIndex].qty = qty;
+        } else {
+          vm.cartList[itemIndex].qty = 1;
         }
-      });
-      this.$bus.$emit("navbarCartList:update");
-      this.$bus.$emit("Alert:success", `${item.product.title}從購物車移除`);
-      this.$bus.$emit("isLoading", false);
+      }
+      localStorage.setItem("cartList", JSON.stringify(vm.cartList));
+      //同步購物車數據
+      vm.$bus.$emit("sidebar:update");
     },
     itemQtyPlus(item) {
       const vm = this;
@@ -196,7 +185,10 @@ export default {
         (product) => product.id === item.id
       );
       if (itemIndex !== -1) {
-        vm.cartList[itemIndex].qty += 1;
+        vm.cartList[itemIndex].qty = parseInt(vm.cartList[itemIndex].qty) + 1;
+        localStorage.setItem("cartList", JSON.stringify(vm.cartList));
+        //同步購物車數據
+        vm.$bus.$emit("sidebar:update");
       }
     },
     itemQtyMinus(item) {
@@ -205,41 +197,11 @@ export default {
         (product) => product.id === item.id
       );
       if (itemIndex !== -1) {
-        vm.cartList[itemIndex].qty -= 1;
+        vm.cartList[itemIndex].qty = parseInt(vm.cartList[itemIndex].qty) - 1;
+        localStorage.setItem("cartList", JSON.stringify(vm.cartList));
+        //同步購物車數據
+        vm.$bus.$emit("sidebar:update");
       }
-    },
-    useCoupon() {
-      const vm = this;
-      if (vm.codeValidate(vm.couponCode)) {
-        const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/coupon`;
-        vm.$bus.$emit("isLoading", true);
-        this.$http
-          .post(url, { data: { code: vm.couponCode } })
-          .then((res) => {
-            console.log(res);
-            if (res.data.success) {
-              vm.couponUsed = res.data.success;
-              vm.getCartList();
-              vm.errorMessage = "";
-              vm.$bus.$emit("Alert:success", "已套用優惠券");
-            } else {
-              vm.errorMessage = res.data.message;
-              vm.couponCode = "";
-            }
-            vm.$bus.$emit("isLoading", false);
-          })
-          .catch((error) => {
-            vm.$bus.$emit("isLoading", false);
-            vm.$bus.$emit("Alert:error", error);
-          });
-      } else {
-        vm.errorMessage = "輸入格式錯誤！！";
-        vm.couponCode = "";
-      }
-    },
-    codeValidate(code) {
-      const rule = /^[a-zA-Z0-9]{8,16}$/;
-      return rule.test(code);
     },
     openModal() {
       $("#postCartList").modal("show");
@@ -249,23 +211,12 @@ export default {
     },
     postCartList() {
       const vm = this;
-      // 刪除原先購物車內容
-      vm.cartList.forEach((item) => {
-        let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${item.id}`;
-        this.$http
-          .delete(url)
-          .then(() => {})
-          .catch((error) => {
-            vm.$bus.$emit("Alert:error", error);
-          });
-      });
-      //送出新的cartList
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
       vm.cartList.forEach((item) => {
         this.$http
           .post(url, {
             data: {
-              product_id: item.product.id,
+              product_id: item.id,
               qty: item.qty,
             },
           })
@@ -274,19 +225,15 @@ export default {
             console.log(error);
           });
       });
-      if (vm.couponUsed) {
-        vm.useCoupon();
-      }
       vm.closeModal();
       vm.$router.push("/order/customerinfo");
     },
   },
-
   computed: {
     totalPrice() {
       let total = 0;
       this.cartList.forEach((item) => {
-        total += item.qty * item.final_total;
+        total += item.price * item.qty;
       });
       return total;
     },

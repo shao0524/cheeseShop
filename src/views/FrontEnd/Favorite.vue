@@ -26,12 +26,12 @@
           </div>
         </div>
 
-        <div class="text-center mt-3" v-else>
+        <div class="text-center mb-5" v-else>
           <h2 class="text-center">目前沒有收藏的商品</h2>
           <router-link
             class="btn btn-primary mt-3"
             to="/products/productList/全部商品"
-            >去逛逛吧
+            ><i class="fas fa-shopping-cart mr-1"></i>去逛逛吧
           </router-link>
         </div>
       </section>

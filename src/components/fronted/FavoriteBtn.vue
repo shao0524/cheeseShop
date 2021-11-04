@@ -17,6 +17,7 @@ export default {
   methods: {
     addFavorite(product) {
       const vm = this;
+      console.log("add");
       vm.$bus.$emit("productList:add", product);
       vm.$bus.$emit("productInfo:add", product);
       vm.$bus.$emit("favorite:add", product);

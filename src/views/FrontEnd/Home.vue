@@ -62,7 +62,7 @@
     </section>
 
     <!-- 類別 -->
-    <section class="my-5 py-5">
+    <section class="my-5 py-3">
       <div class="container">
         <h2 class="titleStyle mb-3">起司種類</h2>
         <div class="row">
@@ -168,7 +168,7 @@
     </section>
 
     <!-- New Product -->
-    <section class="my-5 py-5">
+    <section class="my-5 py-3">
       <div class="container">
         <h2 class="titleStyle mb-3">New products</h2>
         <div class="row mx-4">
@@ -183,7 +183,7 @@
       </div>
     </section>
     <!-- Map -->
-    <section class="mb-5">
+    <section class="my-5 py-3">
       <div class="container">
         <h2 class="titleStyle mb-3">店鋪位置</h2>
         <div class="text-center">
@@ -199,7 +199,7 @@
 
     <!-- subscribe -->
     <section
-      class="py-3 image"
+      class="py-5 image"
       :style="{
         backgroundImage: `url(${require('@/assets/image/home/subscribe.jpg')})`,
       }"
