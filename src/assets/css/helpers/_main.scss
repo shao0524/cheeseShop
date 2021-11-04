@@ -1,3 +1,7 @@
+.wrapper {
+  min-height: calc(100vh - 325px);
+}
+
 
 //frontNavbar
 .navbarBG {
@@ -16,17 +20,48 @@
   @include mobile{
     background-position: 25% center;
   }
+}
 
+.subscribe{
+  background-image: url("assets/image/home/subscribe.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width:100%;
+  height:auto;
+  @include pad{
+    background-position: center center;
+  }
+  @include mobile{
+    background-position: 70% center;
+  }
+}
+
+#map {
+  border:0;
+  width: 100%;
+  height: 450px;
+  @include pad {
+    height: 550px;
+  }
+
+  @include mobile {
+    height: 350px;
+  }
 }
 
 //about
 .aboutImage{
   max-width: 100%;
   height:calc(100vh - 90px);
+  background-image: url("assets/image/about/banner-2.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 
-//cartList badge
+//Navbar
 .badge {
   position: absolute;
   top: 10%;
@@ -35,40 +70,50 @@
 
 //favorite
 .favoriteBanner {
-  height: 230px;
+  height: 300px;
   width: 100%;
-}
-
-.wrapper {
-  min-height: calc(100vh - 325px);
+  object-fit: cover;
+  object-position: center 10%;
 }
 
 .favoriteOffset {
+  background: rgba(0,0,0,.2);
   position: absolute;
-  color:$customer;
+  color:white;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px 20px;
-  width:30%;
-  text-shadow:10px 10px 10px rgba(0,0,0,.3) ;
+  left:50%;
+  transform: translate(-50%,-50%);
+  padding: 20px 30px;
+
   font-weight: bolder;
   @include pad{
-    width: 40%;
+    width: 50%;
   }
   @include mobile {
-    width: 60%;
+    width: 75%;
   }
 
 }
 
+//Event
+.eventBg{
+  background-image: url("~image/event/eventBG.jpg");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  @include mobile{
+    background-position: 100% center;
+  }
+}
 
 
 
 // login
 .bgLogin {
   background-image: url('~image/login/loginBG.jpg');
-  @include imageStyle;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 }
 
 
@@ -81,7 +126,6 @@
   height: 100%;
   top: 0;
   transition: all .5s;
-
   &:hover {
     background: rgba(0, 0, 0, .3);
     font-size: 14px;
@@ -89,7 +133,6 @@
     justify-content: center;
     align-items: center;
     text-decoration: none;
-
     &::before {
       font-family: "Font Awesome 5 Pro";
       font-weight: 900;
@@ -99,23 +142,6 @@
     }
   }
 }
-
-//map
-#map {
-  width: 600px;
-  height: 450px;
-
-  @include pad {
-    width: 650px;
-    height: 550px;
-  }
-
-  @include mobile {
-    width: 300px;
-    height: 350px;
-  }
-}
-
 
 //footer
 .footBg {

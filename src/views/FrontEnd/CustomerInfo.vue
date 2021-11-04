@@ -255,6 +255,7 @@ export default {
               vm.couponUsed = res.data.success;
               vm.getCartList();
               vm.$bus.$emit("Alert:success", "已套用優惠券");
+              vm.errorMessage = "已套用優惠券！";
             } else {
               vm.errorMessage = res.data.message;
               vm.couponCode = "";

@@ -190,7 +190,6 @@
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d588.4370098666424!2d120.34069668242358!3d22.624886377009503!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1806afaba3cf9a70!2z6KGb5q2m54ef56uZ!5e0!3m2!1szh-TW!2stw!4v1630554278302!5m2!1szh-TW!2stw"
             id="map"
-            style="border: 0; width: 100%"
             loading="lazy"
           ></iframe>
         </div>
@@ -198,12 +197,7 @@
     </section>
 
     <!-- subscribe -->
-    <section
-      class="py-5 image"
-      :style="{
-        backgroundImage: `url(${require('@/assets/image/home/subscribe.jpg')})`,
-      }"
-    >
+    <section class="py-5 subscribe">
       <div class="container-fluid py-5 d-flex flex-column align-items-center">
         <h2 class="mb-3">訂閱我們</h2>
         <form @submit.prevent="">

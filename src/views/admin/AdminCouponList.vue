@@ -7,7 +7,7 @@
     </div>
 
     <!-- table -->
-    <table class="table table-hover table-striped table-dark">
+    <table class="table table-hover table-overflow table-striped table-dark">
       <thead class="bg-warning">
         <tr class="text-center">
           <th width="200">優惠券代碼</th>

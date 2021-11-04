@@ -2,11 +2,11 @@
   <div class="container">
     <h2 class="text-center mb-5">訂單資訊</h2>
     <!-- table -->
-    <table class="table table-hover table-borderless mb-3">
+    <table class="table table-overflow table-hover table-borderless mb-3">
       <thead class="bg-dark text-white">
         <tr class="text-center">
           <th width="150">#</th>
-          <th>品項</th>
+          <th>商品名稱</th>
           <th width="200">數量</th>
           <th width="120">售價</th>
           <th width="120">小計</th>
@@ -72,7 +72,7 @@
     </table>
 
     <!-- button -->
-    <div class="d-flex justify-content-end mb-5 mr-0 mr-md-3">
+    <div class="d-flex justify-content-end mb-5">
       <router-link class="btn btn-outline-secondary mr-3" to="$router.go(-1)"
         >再去選購</router-link
       >
@@ -226,7 +226,9 @@ export default {
           });
       });
       vm.closeModal();
-      vm.$router.push("/order/customerinfo");
+      setTimeout(() => {
+        vm.$router.push("/order/customerinfo");
+      }, 500);
     },
   },
   computed: {

@@ -10,12 +10,8 @@
   }
 }
 ;
-@mixin imageStyle {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-}
-;
+
 @mixin gradationColor($direction, $color...) {
   background: linear-gradient($direction, $color);
 }
+

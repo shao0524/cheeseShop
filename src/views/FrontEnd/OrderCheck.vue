@@ -11,7 +11,7 @@
         <div class="row align-items-center">
           <div class="col-12">
             <!-- orderTable -->
-            <table class="table">
+            <table class="table table-overflow">
               <thead class="table-dark">
                 <tr class="text-center">
                   <th>品項</th>
@@ -60,7 +60,7 @@
           </div>
           <!-- customerTable -->
           <div class="col-12">
-            <table class="table">
+            <table class="table table-overflow">
               <thead class="table-dark">
                 <tr>
                   <th colspan="2" class="text-center">收件人資訊</th>

@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper">
     <!-- banner -->
-    <div class="container pt-3">
+    <div class="container">
       <div class="position-relative">
         <img
           src="~image/favorite/favoriteBanner.jpg"
           alt="banner"
-          class="image favoriteBanner"
+          class="favoriteBanner"
         />
         <div class="text-center favoriteOffset">
           <h2>我的收藏</h2>

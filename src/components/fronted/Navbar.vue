@@ -221,7 +221,7 @@ export default {
       vm.$bus.$emit("openSiderbar", true);
     },
     closeNavbar() {
-      if ($(window).width() < 768) {
+      if ($(window).width() <= 768) {
         $(".navbar-toggler").click();
       }
     },

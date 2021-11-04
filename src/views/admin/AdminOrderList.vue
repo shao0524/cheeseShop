@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5">
-    <table class="table table-hover table-striped table-dark">
+    <table class="table table-hover table-overflow table-striped table-dark">
       <thead class="bg-warning">
         <tr class="text-center">
           <th width="250">訂單編號</th>

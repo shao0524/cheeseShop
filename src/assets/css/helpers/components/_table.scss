@@ -1,4 +1,18 @@
-.table{
+.table-imgSize {
+  width: 100%;
+  height:auto;
+  @include pad{
+    width:100px;
+    height:auto;
+  }
+  @include mobile {
+    width: 50px;
+    height:auto;
+  }
+}
+
+
+.table-overflow{
   overflow-x: auto;
   white-space: nowrap;
   @include pad{
@@ -6,17 +20,5 @@
   }
   @include mobile { 
     display: block;
-  }
-  &-imgSize {
-    width: 100%;
-    height:auto;
-    @include pad{
-      width:100px;
-      height:auto;
-    }
-    @include mobile {
-      width: 50px;
-      height:auto;
-    }
   }
 }
