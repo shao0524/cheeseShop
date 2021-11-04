@@ -40,7 +40,7 @@
       </div>
       <div class="text-center">
         <div class="d-flex justify-content-around">
-          <FavoriteBtn :product="item" :is_follow="is_follow" />
+          <FavoriteBtn :item="item" :is_follow="is_follow" />
           <button class="btn btn-outline-primary h6" @click="clickEvent(item)">
             <i class="fas fa-cart-plus"></i> 加入購物車
           </button>

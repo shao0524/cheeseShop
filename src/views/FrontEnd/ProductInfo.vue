@@ -29,7 +29,7 @@
               <li>原料：{{ product.material }}</li>
               <li>單位：1 {{ product.unit }}</li>
             </ul>
-            <FavoriteBtn :product="product" :is_follow="is_follow" />
+            <FavoriteBtn :item="product" :is_follow="is_follow" />
           </div>
           <hr />
           <div class="mb-1 d-flex justify-content-between">
@@ -96,7 +96,7 @@
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-8">
-            <div class="py-3 mt-3 text-white">
+            <div class="py-3 mt-3">
               <h3>注意事項：</h3>
               <ul class="font-weight-bolder">
                 <li class="lineHeight-2">
@@ -131,7 +131,7 @@
           <h3 class="py-3">您可能感興趣的</h3>
         </div>
         <div class="mb-5">
-          <Swiper :favorites="favorites" />
+          <Swiper />
         </div>
       </div>
     </section>

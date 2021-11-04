@@ -13,7 +13,6 @@ import ProductCard from "components/fronted/ProductCard.vue";
 import "swiper/css/swiper.css";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 export default {
-  props: ["favorites"],
   components: {
     Swiper,
     SwiperSlide,
@@ -21,11 +20,13 @@ export default {
   },
   data() {
     return {
+      favorites: [],
       swiperOption: {
         autoplay: true,
         speed: 500,
         spaceBetween: 30,
         loop: true,
+        preventClicks: false,
         breakpoints: {
           320: {
             slidesPerView: 1,
@@ -42,6 +43,10 @@ export default {
     };
   },
   methods: {
+    getFavorite() {
+      const vm = this;
+      vm.favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    },
     getProductData() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/products/all`;
@@ -58,7 +63,16 @@ export default {
     },
   },
   created() {
+    this.getFavorite();
     this.getProductData();
+
+    //更新favorites
+    this.$bus.$on("swiper:update", () => {
+      this.getFavorite();
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("swiper:update");
   },
 };
 </script>
