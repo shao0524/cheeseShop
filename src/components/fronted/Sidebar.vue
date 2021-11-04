@@ -24,20 +24,20 @@
               <tr v-for="item in cartList" :key="item.id">
                 <td width="80">
                   <img
-                    :src="item.product.imageUrl"
-                    :alt="item.product.title"
+                    :src="item.imageUrl"
+                    :alt="item.title"
                     width="50"
                     height="50"
                   />
                 </td>
                 <td class="text-center align-middle">
-                  {{ item.product.title }}
+                  {{ item.title }}
                 </td>
                 <td class="text-center align-middle" width="80">
                   {{ item.qty }}
                 </td>
                 <td class="text-right align-middle" width="120">
-                  {{ item.total | currency }}
+                  {{ (item.price * item.qty) | currency }}
                 </td>
                 <td class="text-center align-middle" width="80">
                   <button class="btn text-white" @click="removeItem(item)">
@@ -48,10 +48,10 @@
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="4" class="text-right">
+                <td colspan="3" class="text-right">
                   <h3 class="h3 font-weight-bolder text-white">總計</h3>
                 </td>
-                <td class="text-right" style="color: #ff5f6f">
+                <td colspan="2" class="text-right" style="color: #ff5f6f">
                   <h3 class="h3 font-weight-bolder text-danger">
                     {{ finalTotal | currency }}
                   </h3>
@@ -67,18 +67,21 @@
           class="btn btn-primary w-50 mt-5"
           @click.native="closeSiderbar"
           to="/order"
-          >去結帳</router-link
         >
+          去結帳
+        </router-link>
       </div>
       <!-- cartList is null -->
       <div v-else>
         <h2 class="h2 text-white text-center">目前購物車沒有商品</h2>
-        <router-link
-          to="/products/productList/全部商品"
-          class="btn btn-primary btn-block mt-5 w-25 mx-auto"
-          @click.native="closeSiderbar"
-          >快去逛逛吧 <i class="fas fa-cart-plus"></i
-        ></router-link>
+        <div class="text-center mt-5">
+          <router-link
+            to="/products/productList/全部商品"
+            class="btn btn-primary"
+            @click.native="closeSiderbar"
+            >快去逛逛吧 <i class="fas fa-cart-plus"></i
+          ></router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -91,35 +94,28 @@ export default {
       isclick: false,
       cartList: [],
       isSignIn: false,
-      finalTotal: 0,
     };
   },
   methods: {
     getCartList() {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-      this.$bus.$emit("isLoading", true);
-      this.$http.get(url).then((res) => {
-        if (res.data.success) {
-          vm.cartList = res.data.data.carts;
-          vm.finalTotal = res.data.data.final_total;
-          this.$bus.$emit("navbarCartList:update", vm.cartList.length);
-          this.$bus.$emit("isLoading", false);
-        }
-      });
+      vm.cartList = JSON.parse(localStorage.getItem("cartList")) || [];
     },
     removeItem(item) {
       const vm = this;
       this.$bus.$emit("isLoading", true);
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${item.id}`;
-      this.$http.delete(url).then((res) => {
-        if (res.data.success) {
-          vm.getCartList();
-        }
-      });
-      this.$bus.$emit("navbarCartList:update");
-      this.$bus.$emit("Alert:success", `${item.product.title}從購物車移除`);
-      this.$bus.$emit("isLoading", false);
+      const itemIndex = vm.cartList.findIndex(
+        (product) => product.id === item.id
+      );
+      if (itemIndex !== -1) {
+        vm.cartList.splice(itemIndex, 1);
+        localStorage.setItem("cartList", JSON.stringify(this.cartList));
+        this.getCartList();
+        vm.$bus.$emit("navbarCartList:update");
+        setTimeout(() => {
+          this.$bus.$emit("isLoading", false);
+        }, 1000);
+      }
     },
     closeSiderbar() {
       const vm = this;
@@ -139,72 +135,52 @@ export default {
     });
     //加入購物車
     this.$bus.$on("sidebar:addtoCart", (item, qty) => {
+      this.$bus.$emit("isLoading", true);
       const itemIndex = this.cartList.findIndex(
-        (product) => product.product.id === item.id
+        (product) => product.id === item.id
       );
       if (itemIndex === -1) {
         //不存在
-        let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-        this.$bus.$emit("isLoading", true);
-        this.$http
-          .post(url, {
-            data: {
-              product_id: item.id,
-              qty,
-            },
-          })
-          .then((res) => {
-            if (res.data.success) {
-              this.getCartList();
-              this.$bus.$emit("Alert:success", `${item.title}成功加入購物車`);
-              this.$bus.$emit("isLoading", false);
-            }
-          })
-          .catch((error) => {
-            this.$bus.$emit("Alert:error", error);
-          });
+        item.qty = qty;
+        this.cartList.push(item);
+        localStorage.setItem("cartList", JSON.stringify(this.cartList));
       } else {
         // 存在
-        const itemQty = this.cartList[itemIndex].qty + qty;
-        console.log(item.id);
-        let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart/${this.cartList[itemIndex].id}`;
-        this.$bus.$emit("isLoading", true);
-        //先刪除
-        this.$http
-          .delete(url)
-          .then((res) => {
-            if (res.data.success) {
-              let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-              this.$http
-                .post(url, {
-                  data: {
-                    product_id: item.id,
-                    qty: itemQty,
-                  },
-                })
-                .then((res) => {
-                  if (res.data.success) {
-                    this.getCartList();
-                    this.$bus.$emit("Alert:success", `${item.title}已修改數量`);
-                    this.$bus.$emit("isLoading", false);
-                  }
-                });
-            }
-          })
-          .catch((error) => {
-            this.$bus.$emit("Alert:error", error);
-          });
+        this.cartList[itemIndex].qty += qty;
+        localStorage.setItem("cartList", JSON.stringify(this.cartList));
       }
+      this.getCartList();
+      this.$bus.$emit("navbarCartList:update");
+      setTimeout(() => {
+        this.$bus.$emit("isLoading", false);
+      }, 1000);
     });
+
     this.$bus.$on("sidebar:cleanCart", () => {
+      localStorage.setItem("cartList", JSON.stringify([]));
+      this.getCartList();
+      this.$bus.$emit("navbarCartList:update");
+    });
+
+    this.$bus.$on("sidebar:update", () => {
       this.getCartList();
     });
+  },
+  computed: {
+    finalTotal() {
+      let total = 0;
+      this.cartList.forEach((item) => {
+        total += item.price * item.qty;
+      });
+      return total;
+    },
   },
   beforeDestroy() {
     this.$bus.$off("openSiderbar");
     this.$bus.$off("signIn");
     this.$bus.$off("sidebar:cleanCart");
     this.$bus.$off("sidebar:addtoCart");
+    this.$bus.$off("sidebar:update");
   },
 };
 </script>

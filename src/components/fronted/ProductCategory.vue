@@ -3,14 +3,14 @@
     <div class="listGroup mt-5 font-weight-bolder">
       <a
         href="#Card"
-        class="listGroup-item titleStyle"
+        class="listGroup-item"
         @click.prevent="changeCategory('全部商品'), scoller()"
         :class="{ active: clickedCategory == '全部商品' }"
         >全部商品</a
       >
       <a
         href="#Card"
-        class="listGroup-item titleStyle"
+        class="listGroup-item"
         @click.prevent="changeCategory(category), scoller()"
         :class="{ active: clickedCategory == category }"
         v-for="(category, index) in categories"

@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="wrapper">
     <!-- banner -->
-    <div class="container mt-3">
+    <div class="container">
       <div class="position-relative">
         <img
           src="~image/favorite/favoriteBanner.jpg"
           alt="banner"
-          class="image favoriteBanner"
+          class="favoriteBanner"
         />
         <div class="text-center favoriteOffset">
           <h2>我的收藏</h2>
@@ -26,7 +26,14 @@
           </div>
         </div>
 
-        <h2 class="text-center" v-else>目前沒有收藏的商品</h2>
+        <div class="text-center mb-5" v-else>
+          <h2 class="text-center">目前沒有收藏的商品</h2>
+          <router-link
+            class="btn btn-primary mt-3"
+            to="/products/productList/全部商品"
+            ><i class="fas fa-shopping-cart mr-1"></i>去逛逛吧
+          </router-link>
+        </div>
       </section>
     </div>
   </div>

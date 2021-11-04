@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- card -->
-    <div class="card shadow-3 mx-3">
+    <div class="card shadow-3">
       <div class="card-head">
         <div class="text-center mt-5">
           <h4 class="card-title">訂單編號：{{ order.id }}</h4>
@@ -11,7 +11,7 @@
         <div class="row align-items-center">
           <div class="col-12">
             <!-- orderTable -->
-            <table class="table">
+            <table class="table table-overflow">
               <thead class="table-dark">
                 <tr class="text-center">
                   <th>品項</th>
@@ -60,7 +60,7 @@
           </div>
           <!-- customerTable -->
           <div class="col-12">
-            <table class="table">
+            <table class="table table-overflow">
               <thead class="table-dark">
                 <tr>
                   <th colspan="2" class="text-center">收件人資訊</th>
@@ -105,12 +105,12 @@
       </div>
     </div>
     <!-- button -->
-    <div class="my-5 d-flex justify-content-center">
-      <router-link class="btn btn-outline-secondary mx-3 mx-md-5 mx-lg-5" to="/"
+    <div class="my-5 d-flex justify-content-end">
+      <router-link class="btn btn-outline-secondary mr-3" to="/"
         >返回首頁</router-link
       >
       <router-link
-        class="btn btn-primary mx-3 mx-md-5 mx-lg-5"
+        class="btn btn-primary"
         @click.native="payment"
         to="/order/ordercompleted"
         >付款去</router-link

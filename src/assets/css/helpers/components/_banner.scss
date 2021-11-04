@@ -1,5 +1,6 @@
 .banner {
-  @include imageStyle;
+  background-repeat: no-repeat;
+  background-size: cover;
   &-mask {
     color: white;
     background: rgba(216, 196, 109, 0.3);

@@ -69,10 +69,13 @@
           <!-- 我的最愛 -->
           <li class="nav-item mr-3 py-2 position-relative">
             <router-link
-              class="btn text-secondary"
+              class="btn"
               to="/favorite"
               @click.native="closeNavbar"
-              :class="{ 'text-success': is_signin }"
+              :class="{
+                'text-primary': is_signin,
+                'text-secondary': !is_signin,
+              }"
               ><i class="fas fa-heart fa-2x"></i
             ></router-link>
             <span
@@ -94,7 +97,7 @@
               <!-- 會員已登入 -->
               <button
                 type="button"
-                class="btn text-success bg-transparent border-0"
+                class="btn text-primary bg-transparent border-0"
                 id="member"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -148,10 +151,11 @@
             <div class="dropdown">
               <button
                 type="button"
-                class="btn text-secondary border-0 bg-transparent"
+                class="btn border-0 bg-transparent"
                 id="cart"
                 :class="{
-                  'text-success': is_signin,
+                  'text-primary': is_signin,
+                  'text-secondary': !is_signin,
                 }"
                 @click.prevent="
                   openCartList();
@@ -163,8 +167,8 @@
             </div>
             <span
               class="badge badge-danger rounded-circle"
-              v-if="cartItemLen > 0"
-              >{{ cartItemLen }}</span
+              v-if="cartLen > 0"
+              >{{ cartLen }}</span
             >
           </li>
         </ul>
@@ -178,10 +182,10 @@ import $ from "jquery";
 export default {
   data() {
     return {
-      cartItemLen: 0,
       favoritesLen: 0,
       favorites: [],
       has_favorite: false,
+      cartList: [],
     };
   },
   methods: {
@@ -217,13 +221,13 @@ export default {
       vm.$bus.$emit("openSiderbar", true);
     },
     closeNavbar() {
-      if ($(window).width() < 768) {
+      if ($(window).width() <= 768) {
         $(".navbar-toggler").click();
       }
     },
-    getCartListLen(len) {
+    getCartList() {
       const vm = this;
-      vm.cartItemLen = len;
+      vm.cartList = JSON.parse(localStorage.getItem("cartList")) || [];
     },
     getFavoriteLen() {
       const vm = this;
@@ -241,16 +245,20 @@ export default {
         return false;
       }
     },
+    cartLen() {
+      return this.cartList.length;
+    },
   },
   created() {
     //取得購物車數量
+    this.getCartList();
     //取得我的最愛數量
     this.getFavoriteLen();
     //檢查登入狀態
     this.checkLoginStatus();
     //購物車物件數量
-    this.$bus.$on("navbarCartList:update", (len) => {
-      this.getCartListLen(len);
+    this.$bus.$on("navbarCartList:update", () => {
+      this.getCartList();
     });
     this.$bus.$on("navbarFavorites:update", () => {
       this.getFavoriteLen();

@@ -21,11 +21,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  created() {
-    this.$bus.$emit("sidebar:cleanCart");
-  },
-};
-</script>

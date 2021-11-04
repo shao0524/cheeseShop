@@ -11,7 +11,7 @@
         <div class="col-12 col-md-6 col-lg-6 text-center px-0">
           <img :src="product.imageUrl" class="shadow-3 image" />
           <button
-            class="btn btn-warning mt-5 mb-3 py-3 btn-block"
+            class="btn btn-outline-primary mt-5 mb-3 py-3 btn-block"
             :disabled="itemQty > product.stock || itemQty <= 0"
             @click="addCart(product, itemQty)"
           >
@@ -29,7 +29,7 @@
               <li>原料：{{ product.material }}</li>
               <li>單位：1 {{ product.unit }}</li>
             </ul>
-            <FavoriteBtn :product="product" :is_follow="is_follow" />
+            <FavoriteBtn :item="product" :is_follow="is_follow" />
           </div>
           <hr />
           <div class="mb-1 d-flex justify-content-between">
@@ -92,7 +92,7 @@
     </div>
 
     <!-- notice -->
-    <section style="background-color: #17a2b84d">
+    <section style="background-color: #d0d0d0">
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-8">
@@ -128,10 +128,10 @@
     <section>
       <div class="container">
         <div class="text-center mt-3">
-          <h3 class="h3 py-3">您可能感興趣的</h3>
+          <h3 class="py-3">您可能感興趣的</h3>
         </div>
         <div class="mb-5">
-          <Swiper :favorites="favorites" />
+          <Swiper />
         </div>
       </div>
     </section>
@@ -174,25 +174,22 @@ export default {
     },
     addCart(item, qty) {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
       vm.$bus.$emit("isLoading", true);
-      const cart = {
-        product_id: item.id,
-        qty: qty,
-      };
-      this.$http
-        .post(url, { data: cart })
-        .then((res) => {
-          if (res.data.success) {
-            vm.$bus.$emit("addItem:success");
-            vm.$bus.$emit("Alert:success", `${item.title} 已成功加入購物車`);
-          }
-          vm.$bus.$emit("isLoading", false);
-        })
-        .catch((error) => {
-          vm.$bus.$emit("isLoading", false);
-          vm.$bus.$emit("Alert:error", error);
-        });
+      let cartList = JSON.parse(localStorage.getItem("cartList"));
+      const itemIndex = cartList.findIndex((product) => product.id === item.id);
+      if (itemIndex === -1) {
+        item.qty = qty;
+        cartList.push(item);
+      } else {
+        cartList[itemIndex].qty = parseInt(cartList[itemIndex].qty) + qty;
+      }
+      localStorage.setItem("cartList", JSON.stringify(cartList));
+      vm.itemQty = 1;
+      setTimeout(() => {
+        vm.$bus.$emit("isLoading", false);
+      }, 1000);
+      vm.$bus.$emit("sidebar:update");
+      vm.$bus.$emit("navbarCartList:update");
     },
     getFavorites() {
       const vm = this;

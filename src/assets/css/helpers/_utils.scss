@@ -5,9 +5,15 @@
 
 // img
 .image {
-  @include imageStyle;
   object-fit:cover;
   max-width:100%;
+  height:auto;
+}
+.bgStyle{
+  max-width: 100%;
+  height:auto;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 // line-height
 .lineHeight {
@@ -47,3 +53,4 @@
 .transparent {
   background: transparent;
 }
+

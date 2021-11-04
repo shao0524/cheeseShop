@@ -7,7 +7,7 @@
       </button>
     </div>
     <!-- table -->
-    <table class="table table-hover table-striped table-dark">
+    <table class="table table-hover table-overflow table-striped table-dark">
       <thead class="bg-warning">
         <tr class="text-center">
           <th width="250">產品編號</th>
@@ -57,7 +57,6 @@
     <div class="my-3">
       <Pagination :pagination="pagination" @changePage="changePage" />
     </div>
-
     <!-- create & edit Modal -->
     <div
       class="modal fade"
@@ -477,7 +476,7 @@ export default {
       let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/admin/product`;
       let method = "post";
       if (!vm.isNew) {
-        url = `${process.env.APIPATH}/api/${process.env.USER}/admin/product/${vm.tempProduct.id}`;
+        url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/admin/product/${vm.tempProduct.id}`;
         method = "put";
       }
       if (!vm.tempProduct.price) {
