@@ -15,3 +15,9 @@
   background: linear-gradient($direction, $color);
 }
 
+@mixin bgStyle($size,$X,$Y){
+  max-width: 100%;
+  background-size: $size;
+  background-position: $X $Y;
+  background-repeat: no-repeat;
+}

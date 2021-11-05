@@ -33,14 +33,15 @@
                   <h3 class="text-primary">聯絡方式</h3>
                   <div>
                     <a href="#" class="btn-link d-block text-left"
-                      ><i class="fas fa-envelope-open"> example@gmail.com</i></a
+                      ><i class="bi bi-envelope-open-fill mr-1"></i
+                      >example@com</a
                     >
                     <a href="#" class="btn-link d-block text-left"
-                      ><i class="fas fa-phone-square"> 0900-000-000</i></a
-                    >
+                      ><i class="bi bi-telephone-fill mr-1"></i>0900-000-000
+                    </a>
                     <a href="#" class="btn-link d-block text-left"
-                      ><i class="fas fa-map-marker-alt"> 高雄的某一個角落</i></a
-                    >
+                      ><i class="bi bi-pin-map-fill mr-1"></i>高雄的某一個角落
+                    </a>
                   </div>
                 </div>
               </div>

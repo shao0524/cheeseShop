@@ -27,6 +27,7 @@ export default {
         spaceBetween: 30,
         loop: true,
         preventClicks: false,
+        slideToClickedSlide: true,
         breakpoints: {
           320: {
             slidesPerView: 1,

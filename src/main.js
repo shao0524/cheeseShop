@@ -8,6 +8,7 @@ import VueAxios from "vue-axios";
 import "bootstrap";
 import VueLoading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import {
   ValidationObserver,
   ValidationProvider,

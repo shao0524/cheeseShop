@@ -79,8 +79,8 @@
             to="/products/productList/全部商品"
             class="btn btn-primary"
             @click.native="closeSiderbar"
-            >快去逛逛吧 <i class="fas fa-cart-plus"></i
-          ></router-link>
+            ><i class="fas fa-cart-plus mr-1"></i>去逛逛吧
+          </router-link>
         </div>
       </div>
     </div>
