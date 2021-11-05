@@ -4,7 +4,7 @@
       <h2 class="titleStyle my-3">促銷活動</h2>
       <div class="row justify-content-center">
         <div class="col-12 col-md-12 col-lg-12 mb-5">
-          <div class="text-white text-center eventBg py-3">
+          <div class="text-dark text-center eventBg py-3">
             <div class="row">
               <div
                 class="

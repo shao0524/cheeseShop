@@ -3,18 +3,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Noto+Sans+TC&display=swap');
 
+
+
+
+
+//bg
+.bg{
+  max-width: 100%;
+  &-cover{
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}
 // img
 .image {
-  object-fit:cover;
   max-width:100%;
-  height:auto;
+  &-cover{
+    object-fit: cover;
+  }
+  &-position-center{
+    object-position: center center;
+  }
+  &-position-bottom{
+    object-position: center bottom;
+  }
+
 }
-.bgStyle{
-  max-width: 100%;
-  height:auto;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
+
+
 // line-height
 .lineHeight {
   @for $i from 1 through 5 {

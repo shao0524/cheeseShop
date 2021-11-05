@@ -4,7 +4,7 @@
     <div class="container">
       <div class="position-relative">
         <img
-          src="~image/favorite/favoriteBanner.jpg"
+          src="https://images.unsplash.com/photo-1625084561188-0cb22b1d487d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80"
           alt="banner"
           class="favoriteBanner"
         />

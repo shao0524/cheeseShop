@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- Carousel -->
+    <Carousel />
     <div class="container">
-      <Carousel />
       <div class="mt-3 mt-lg-3">
         <div class="row mx-1">
           <!-- productCategory -->

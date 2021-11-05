@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- banner -->
-    <div
-      class="banner mb-5 homeImage"
-      :style="{
-        backgroundImage: `url(${require('image/home/banner-1.jpg')})`,
-      }"
-    >
+    <div class="banner mb-5 homeImage">
       <div class="banner-mask text-center">
         <span
           class="logoStyle mask-title"
@@ -199,8 +194,8 @@
     <!-- subscribe -->
     <section class="py-5 subscribe">
       <div class="container-fluid py-5 d-flex flex-column align-items-center">
-        <h2 class="mb-3">訂閱我們</h2>
-        <form @submit.prevent="">
+        <h2 class="mb-3 text-white">訂閱我們</h2>
+        <form>
           <div class="form-inline">
             <input
               type="email"
@@ -212,7 +207,7 @@
             />
             <button
               type="submit"
-              class="btn bg-warning text-white"
+              class="btn bg-primary text-white"
               :disabled="!email"
             >
               送出

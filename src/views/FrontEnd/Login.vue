@@ -12,7 +12,6 @@
                   width="50"
                   height="50"
                   alt="LOGO"
-                  class="image image"
                 />
               </div>
             </div>
