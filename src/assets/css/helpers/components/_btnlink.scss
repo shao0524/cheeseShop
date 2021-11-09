@@ -1,15 +1,15 @@
 .btn-link {
   color: lighten(black, 30%);
   padding:5px 10px;
-
+  text-decoration: none !important;
+  
   @each $color,
   $value in $theme-colors {
     &-#{$color} {
-      color: $value;
+      &:hover{
+        color: $value;
+      }
     }
   }
-
-  &:hover {
-    color: $info;
-  }
 }
+ 

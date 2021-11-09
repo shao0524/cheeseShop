@@ -49,7 +49,7 @@
         <h2 class="text-primary">還沒取得優惠券嗎？</h2>
         <div class="d-flex justify-content-center">
           <h2 class="text-primary mr-3">快來領取吧</h2>
-          <router-link class="btn btn-success align-self-center" to="/event"
+          <router-link class="btn btn-primary align-self-center" to="/event"
             >領取去！</router-link
           >
         </div>

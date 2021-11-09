@@ -46,13 +46,21 @@
             <div class="coupon">
               <div class="coupon-header">
                 <h3 class="mt-3">{{ coupon.percent }} 折</h3>
-                <button
-                  class="btn btn-danger mb-3"
-                  @click="copyCode(coupon.code)"
-                  :disabled="coupon.is_use"
-                >
-                  點我使用
-                </button>
+                <div class="d-flex justify-content-center">
+                  <button
+                    class="btn btn-danger"
+                    @click="copyCode(coupon.code)"
+                    :disabled="coupon.is_use"
+                  >
+                    點我使用
+                  </button>
+                  <input
+                    type="text"
+                    class="text-center coupon-input"
+                    :id="coupon.code"
+                    :value="coupon.code"
+                  />
+                </div>
               </div>
               <div class="coupon-body">
                 <h5 class="mt-3">{{ coupon.title }}</h5>
@@ -64,12 +72,6 @@
                 </h6>
               </div>
             </div>
-            <input
-              type="text"
-              class="text-center coupon-input"
-              :id="coupon.code"
-              :value="coupon.code"
-            />
           </div>
         </div>
       </div>

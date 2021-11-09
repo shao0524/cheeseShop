@@ -15,14 +15,14 @@
                       <h2 class="logoStyle text-primary">Cheeseny</h2>
                     </div>
                     <div class="d-flex">
-                      <a class="btn-link" href="#"
+                      <a class="btn-link btn-link-primary" href="#"
                         ><i class="fab fa-facebook-square fa-2x"></i
                       ></a>
-                      <a class="btn-link" href="#"
+                      <a class="btn-link btn-link-primary" href="#"
                         ><i class="fab fa-line fa-2x"></i
                       ></a>
                       <a
-                        class="btn-link"
+                        class="btn-link btn-link-primary"
                         href="https://github.com/shao0524/cheeseShop"
                         ><i class="fab fa-github fa-2x"></i
                       ></a>
@@ -32,14 +32,20 @@
                 <div class="col-7 col-md-4 col-lg-3">
                   <h3 class="text-primary">聯絡方式</h3>
                   <div>
-                    <a href="#" class="btn-link d-block text-left"
+                    <a
+                      href="#"
+                      class="btn-link btn-link-primary d-block text-left"
                       ><i class="bi bi-envelope-open-fill mr-1"></i
                       >example@com</a
                     >
-                    <a href="#" class="btn-link d-block text-left"
+                    <a
+                      href="#"
+                      class="btn-link btn-link-primary d-block text-left"
                       ><i class="bi bi-telephone-fill mr-1"></i>0900-000-000
                     </a>
-                    <a href="#" class="btn-link d-block text-left"
+                    <a
+                      href="#"
+                      class="btn-link btn-link-primary d-block text-left"
                       ><i class="bi bi-pin-map-fill mr-1"></i>高雄的某一個角落
                     </a>
                   </div>

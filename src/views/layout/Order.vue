@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container text-center">
-      <div class="pt-5 mx-auto">
+      <div class="py-5 mx-auto">
         <ul class="progressBar">
           <li
             class="progressBar-item"
