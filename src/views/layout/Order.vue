@@ -4,29 +4,25 @@
       <div class="pt-5 mx-auto">
         <ul class="progressBar">
           <li
-            class="progressBar-item h5"
+            class="progressBar-item"
+            data-text="確認購物車"
             :class="{ active: $route.name == 'CartList' }"
-          >
-            確認購物車
-          </li>
+          ></li>
           <li
-            class="progressBar-item h5"
+            class="progressBar-item"
+            data-text="填寫資料"
             :class="{ active: $route.name == 'CustomerInfo' }"
-          >
-            填寫資料
-          </li>
+          ></li>
           <li
-            class="progressBar-item h5"
+            class="progressBar-item"
+            data-text="確認付款"
             :class="{ active: $route.name == 'OrderCheck' }"
-          >
-            確認付款
-          </li>
+          ></li>
           <li
-            class="progressBar-item h5"
+            class="progressBar-item"
+            data-text="完成訂單"
             :class="{ active: $route.name == 'OrderCompleted' }"
-          >
-            完成訂單
-          </li>
+          ></li>
         </ul>
       </div>
     </div>
