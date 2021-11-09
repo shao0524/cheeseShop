@@ -2,7 +2,7 @@
   <div class="container">
     <h2 class="text-center mb-5">訂單資訊</h2>
     <!-- table -->
-    <table class="table table-overflow table-hover table-borderless mb-3">
+    <table class="table table-hover table-overflow table-borderless mb-3">
       <thead class="bg-dark text-white">
         <tr class="text-center">
           <th width="150">#</th>

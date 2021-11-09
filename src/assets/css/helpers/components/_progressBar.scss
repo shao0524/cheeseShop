@@ -9,38 +9,56 @@ $bgColor : #fff;
   display: flex;
   justify-content: space-between;
   position: relative;
-  @include mobile{
-    flex-direction: column;
-  }
-
+ 
   &::before {
     //line
     content: '';
     position: absolute;
     top: 30%;
-    left: 5%;
-    right: 5%;
+    left:5%;
+    right:5%;
     min-height: 2px;
     background: $lineColor;
-
-    @include mobile{
-      left:25%;
-      top:5%;
-      bottom:10%;
-      max-width: 2px;
+    z-index:-1;
+    @include pad{
+      top:30%;
     }
-
-  }
-
-  &-item {
-    list-style-type: none;
-    position: relative;
-    font-weight: bolder;
     @include mobile{
-      display: flex;
-      white-space: nowrap;
-      align-items: center;
-      margin-right: 5%;
+      top:25%;
+    }
+  }
+  &-item {
+    &:first-child{
+      text-align: center;
+    }
+    &:last-child{
+      text-align: center;
+    }
+    list-style-type: none;
+    &::before{
+      //圓圈
+      display: inline-block;
+      font-size: 1.5em;
+      content:counter(step);
+      counter-increment: step;
+      padding: 1em 1.5em;
+      border-radius: 50%;
+      background: $bgColor;
+      border: 3px solid $borderColor;
+      @include mobile{
+        font-size: 1em;
+        padding: .75em 1em;
+      }
+    }
+    &::after{
+      //文字
+      content:attr(data-text);
+      display: block;
+      font-size: 1.5em;
+      margin-top: 20px;
+      @include mobile{
+        font-size: 1em;
+      }
     }
     &.active {
       color: $textColor;
@@ -49,27 +67,5 @@ $bgColor : #fff;
         box-shadow: 0px 0px 20px $textColor;
       }
     }
-    &::before {
-      //圓圈
-      content: counter(step);
-      counter-increment: step;
-      width: 80px;
-      height: 80px;
-      line-height: 70px;
-      font-size: 40px;
-      border: 3px solid $borderColor;
-      text-align: center;
-      display: block;
-      margin: 0 auto 30px auto;
-      border-radius: 50%;
-      background: $bgColor;
-      
-      @include mobile{
-        margin-left:25%;
-        margin-top:30px;
-        transform: translateX(-50%);
-      }
-    }
-
   }
 }

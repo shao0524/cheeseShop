@@ -10,7 +10,7 @@
       <!-- main -->
       <div class="offConvas-body" v-if="cartList.length > 0">
         <div class="mb-3 offConvas-table">
-          <table class="table text-white w-75 mx-auto">
+          <table class="table table-overflow text-white w-75 mx-auto">
             <thead>
               <tr>
                 <th class="text-center" width="80">#</th>
