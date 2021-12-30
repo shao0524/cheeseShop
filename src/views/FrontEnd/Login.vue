@@ -65,6 +65,7 @@
 
 <script>
 export default {
+  name: "Login",
   data() {
     return {
       is_keepSign: false,

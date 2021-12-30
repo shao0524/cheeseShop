@@ -196,6 +196,7 @@
 <script>
 import $ from "jquery";
 export default {
+  name: "CustomerInfo",
   data() {
     return {
       user: {},

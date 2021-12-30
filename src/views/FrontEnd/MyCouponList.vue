@@ -81,6 +81,7 @@
 
 <script>
 export default {
+  name: "MyCouponList",
   data() {
     return {
       todoStatus: "全部",

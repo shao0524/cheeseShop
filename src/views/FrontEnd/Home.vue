@@ -222,6 +222,7 @@
 <script>
 import ProductCard from "components/fronted/ProductCard.vue";
 export default {
+  name: "Home",
   components: {
     ProductCard,
   },

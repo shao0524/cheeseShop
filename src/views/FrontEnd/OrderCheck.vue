@@ -121,6 +121,7 @@
 
 <script>
 export default {
+  name: "OrderCheck",
   data() {
     return {
       order: {

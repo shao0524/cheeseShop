@@ -412,6 +412,7 @@
 import $ from "jquery";
 import Pagination from "components/common/Pagination.vue";
 export default {
+  name: "AdminCatelogue",
   components: {
     Pagination,
   },

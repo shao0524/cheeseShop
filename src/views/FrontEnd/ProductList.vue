@@ -58,6 +58,7 @@ import ProductCategory from "components/fronted/ProductCategory.vue";
 import ProductCard from "components/fronted/ProductCard.vue";
 import Pagination from "components/common/Pagination.vue";
 export default {
+  name: "ProductList",
   components: {
     Carousel,
     ProductCategory,

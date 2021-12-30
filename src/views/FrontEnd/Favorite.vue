@@ -42,6 +42,7 @@
 <script>
 import ProductCard from "components/fronted/ProductCard.vue";
 export default {
+  name: "Favorite",
   components: {
     ProductCard,
   },
