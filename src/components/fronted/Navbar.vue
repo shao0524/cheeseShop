@@ -1,175 +1,151 @@
 <template>
   <div>
-    <nav
-      class="navbar navbar-expand-lg navbar-light text-dark navbarBG shadow-3"
-    >
-      <router-link class="navbar-brand ml-3 logoStyle text-primary" to="/"
-        ><h1 class="text-primary">Cheeseny</h1></router-link
+    <nav class="nb">
+      <router-link to="/"
+        ><h1 class="nb-logo nb-logo logoStyle">Cheeseny</h1></router-link
       >
       <button
-        class="navbar-toggler"
+        class="nb-toggleBtn"
         type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        :class="{ 'nb-toggleBtn-active': isToggleClick }"
+        @click="isToggleClick = !isToggleClick"
       >
-        <span class="navbar-toggler-icon"></span>
+        <i class="fas fa-bars"></i>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="nb-collapse" :class="{ 'nb-collapse-active': isToggleClick }">
         <!-- 頁面列表 -->
-        <ul
-          class="
-            navbar-nav
-            mr-auto
-            ml-3
-            align-items-start align-items-md-left align-items-lg-center
-          "
-        >
-          <li class="nav-item">
+        <ul class="nb-nav">
+          <li class="nb-nav-item">
             <router-link
-              class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-primary': this.$route.name === 'Home' }"
-              @click.native="closeNavbar"
+              class="nb-nav-item-link"
+              :class="{
+                'nb-nav-item-link-active': this.$route.name === 'Home',
+              }"
+              @click.native="isToggleClick = false"
               to="/"
               >首頁</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nb-nav-item">
             <router-link
-              class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-primary': this.$route.name == 'About' }"
-              @click.native="closeNavbar"
+              class="nb-nav-item-link"
+              :class="{
+                'nb-nav-item-link-active': this.$route.name == 'About',
+              }"
               to="/about"
+              @click.native="isToggleClick = false"
               >關於起司</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nb-nav-item">
             <router-link
-              class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-primary': this.$route.name === 'ProductList' }"
-              @click.native="closeNavbar"
+              class="nb-nav-item-link"
+              :class="{
+                'nb-nav-item-link-active': this.$route.name === 'ProductList',
+              }"
               to="/products/productList/全部商品"
+              @click.native="isToggleClick = false"
               >產品介紹</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nb-nav-item">
             <router-link
-              class="nav-link font-weight-bolder h4 mb-0"
-              :class="{ 'text-primary': this.$route.name === 'Event' }"
-              @click.native="closeNavbar"
+              class="nb-nav-item-link"
+              :class="{
+                'nb-nav-item-link-active': this.$route.name === 'Event',
+              }"
               to="/event"
+              @click.native="isToggleClick = false"
               >優惠活動</router-link
             >
           </li>
         </ul>
 
-        <ul class="navbar-nav ml-3">
-          <!-- 我的最愛 -->
-          <li class="nav-item mr-3 py-2 position-relative">
-            <router-link
-              class="btn"
-              to="/favorite"
-              @click.native="closeNavbar"
+        <div class="nb-btnGroup">
+          <!-- favorite -->
+          <div class="nb-btnGroup-item">
+            <button
+              type="button"
+              class="nb-btn"
+              @click="toFavorite()"
               :class="{
-                'text-primary': is_signin,
-                'text-secondary': !is_signin,
+                'nb-btn-active': isLogin,
               }"
-              ><i class="fas fa-heart fa-2x"></i
-            ></router-link>
-            <span
-              class="badge badge-danger rounded-circle"
-              v-if="favoritesLen > 0"
-              >{{ favoritesLen }}</span
             >
-          </li>
-          <!-- 會員 -->
-          <li class="nav-item mr-3 py-2">
-            <!-- 會員未登入 -->
-            <div class="dropdown">
-              <router-link
-                class="btn text-secondary"
-                to="/login"
-                v-if="!is_signin"
-                ><i class="fas fa-user-circle fa-2x"></i
-              ></router-link>
-              <!-- 會員已登入 -->
+              <i class="fas fa-heart fa-2x"></i>
+              <span
+                class="nb-badge nb-badge-color-danger"
+                v-if="favoritesLen > 0"
+                >{{ favoritesLen }}</span
+              >
+            </button>
+          </div>
+          <!-- cartList -->
+          <div class="nb-btnGroup-item">
+            <button
+              type="button"
+              class="nb-btn"
+              @click="openCartList"
+              :class="{
+                'nb-btn-active': isLogin,
+              }"
+            >
+              <i class="fas fa-shopping-cart fa-2x"></i>
+              <span class="nb-badge nb-badge-color-danger" v-if="cartLen > 0">{{
+                cartLen
+              }}</span>
+            </button>
+          </div>
+          <!-- user -->
+          <div class="nb-btnGroup-item">
+            <div class="nb-dropDown">
               <button
                 type="button"
-                class="btn text-primary bg-transparent border-0"
-                id="member"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                v-else
+                class="nb-dropDown-toggle"
+                :class="{
+                  'nb-dropDown-toggle-active': isLogin,
+                }"
+                @click="isUserBtnClick = !isUserBtnClick"
               >
                 <i class="fas fa-user-circle fa-2x"></i>
               </button>
-
-              <div
-                class="dropdown-menu dropdown-menu-right w-25"
-                aria-labelledby="member"
-              >
-                <router-link
-                  class="dropdown-item py-1 py-lg-1"
-                  to="/customer/myorderlist"
-                  @click.native="
-                    currentPage = 'myorderlist';
-                    closeNavbar();
-                  "
-                  >我的訂單</router-link
-                >
-                <router-link
-                  class="dropdown-item py-1 py-lg-1"
-                  to="/customer/mycouponlist"
-                  @click.native="
-                    currentPage = 'myordercoupon';
-                    closeNavbar();
-                  "
-                  >我的優惠券</router-link
-                >
-                <router-link
-                  class="dropdown-item text-danger py-1 py-lg-1"
-                  to="/admin/"
-                  >後台</router-link
-                >
-                <button
-                  type="button"
-                  class="dropdown-item py-1 text-danger"
-                  href="#"
-                  @click="signout"
-                >
-                  會員登出
-                </button>
-              </div>
             </div>
-          </li>
-
-          <!-- 購物車 -->
-          <li class="nav-item mr-3 py-2 position-relative">
-            <div class="dropdown">
-              <button
-                type="button"
-                class="btn border-0 bg-transparent"
-                id="cart"
-                :class="{
-                  'text-primary': is_signin,
-                  'text-secondary': !is_signin,
-                }"
-                @click.prevent="
-                  openCartList();
-                  closeNavbar();
-                "
-              >
-                <i class="fas fa-shopping-cart fa-2x"></i>
-              </button>
-            </div>
-            <span
-              class="badge badge-danger rounded-circle"
-              v-if="cartLen > 0"
-              >{{ cartLen }}</span
+          </div>
+        </div>
+        <ul
+          class="nb-dropDown-list"
+          :class="{ 'nb-dropDown-list-active': isUserBtnClick }"
+        >
+          <li class="nb-dropDown-list-item" v-if="!isLogin">
+            <router-link
+              class="
+                nb-dropDown-list-item-link nb-dropDown-list-item-link-danger
+              "
+              to="/login"
+              v-if="!isLogin"
+              >管理者登入</router-link
             >
+          </li>
+          <li class="nb-dropDown-list-item" v-if="isLogin">
+            <router-link
+              class="
+                nb-dropDown-list-item-link nb-dropDown-list-item-link-danger
+              "
+              to="/admin"
+            >
+              後台</router-link
+            >
+          </li>
+          <li class="nb-dropDown-list-item" v-if="isLogin">
+            <button
+              class="
+                nb-dropDown-list-item-link nb-dropDown-list-item-link-danger
+              "
+              type="button"
+              @click="signout"
+            >
+              會員登出
+            </button>
           </li>
         </ul>
       </div>
@@ -182,10 +158,10 @@ import $ from "jquery";
 export default {
   data() {
     return {
-      favoritesLen: 0,
       favorites: [],
-      has_favorite: false,
       cartList: [],
+      isToggleClick: false,
+      isUserBtnClick: false,
     };
   },
   methods: {
@@ -220,53 +196,68 @@ export default {
       const vm = this;
       vm.$bus.$emit("openSiderbar", true);
     },
-    closeNavbar() {
-      if ($(window).width() <= 768) {
-        $(".navbar-toggler").click();
-      }
-    },
     getCartList() {
       const vm = this;
       vm.cartList = JSON.parse(localStorage.getItem("cartList")) || [];
     },
-    getFavoriteLen() {
+    getFavorites() {
       const vm = this;
-      const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-      vm.favoritesLen = favorites.length;
+      vm.favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    },
+    toFavorite() {
+      const vm = this;
+      vm.isToggleClick = false;
+      vm.$router.push("/favorite");
     },
   },
   computed: {
-    is_signin() {
+    isLogin() {
+      const vm = this;
       if (this.$http.defaults.headers.common.Authorization) {
-        this.$bus.$emit("signIn", true);
+        vm.$bus.$emit("signIn", true);
         return true;
       } else {
-        this.$bus.$emit("signIn", false);
+        vm.$bus.$emit("signIn", false);
         return false;
       }
     },
     cartLen() {
-      return this.cartList.length;
+      const vm = this;
+      return vm.cartList.length;
+    },
+    favoritesLen() {
+      const vm = this;
+      return vm.favorites.length;
     },
   },
   created() {
+    const vm = this;
     //取得購物車數量
-    this.getCartList();
+    vm.getCartList();
     //取得我的最愛數量
-    this.getFavoriteLen();
+    vm.getFavorites();
     //檢查登入狀態
-    this.checkLoginStatus();
+    vm.checkLoginStatus();
     //購物車物件數量
-    this.$bus.$on("navbarCartList:update", () => {
-      this.getCartList();
+    vm.$bus.$on("navbarCartList:update", () => {
+      vm.getCartList();
     });
-    this.$bus.$on("navbarFavorites:update", () => {
-      this.getFavoriteLen();
+    vm.$bus.$on("navbarFavorites:update", () => {
+      vm.getFavorites();
+    });
+    vm.$bus.$on("slideUpNavbar", () => {
+      vm.isToggleClick = false;
+    });
+  },
+  mounted() {
+    $(".nb-dropDown-toggle").click(() => {
+      $(".nb-dropDown-list").slideToggle();
     });
   },
   beforeDestroy() {
-    this.$bus.$off("navbarCartList:update");
-    this.$bus.$off("navbarFavorites:update");
+    const vm = this;
+    vm.$bus.$off("navbarCartList:update");
+    vm.$bus.$off("navbarFavorites:update");
   },
 };
 </script>

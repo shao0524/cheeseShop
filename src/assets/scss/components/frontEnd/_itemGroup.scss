@@ -1,0 +1,26 @@
+.itemGroup {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1em 0;
+
+  &-item {
+    margin: 0 1%;
+    flex: 1 1 20%;
+    overflow: hidden;
+
+    &-img {
+      width: 100%;
+      transition: 0.3s transform ease;
+
+
+      &:hover {
+        transform: scale(1.2, 1.2);
+      }
+    }
+
+    &-title {
+      padding: 0.75em 0;
+      text-align: center;
+    }
+  }
+}

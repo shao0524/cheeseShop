@@ -18,7 +18,7 @@ module.exports = {
         views: "@/views",
         plugins: "@/plugins",
         image: "@/assets/image",
-        sass: "@/assets/sass",
+        scss: "@/assets/scss",
         node: "/node_modules",
       },
     },

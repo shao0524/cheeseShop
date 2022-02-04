@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-right my-3 mr-3">
+    <div class="text-right my-3">
       <button class="btb btn-primary px-3 py-1" @click="openModal(true)">
         建立優惠券
       </button>
@@ -8,7 +8,7 @@
 
     <!-- table -->
     <table class="table table-hover table-overflow table-striped table-dark">
-      <thead class="bg-warning">
+      <thead class="bg-primary">
         <tr class="text-center">
           <th width="200">優惠券代碼</th>
           <th>優惠券名稱</th>
@@ -23,7 +23,7 @@
         <tr class="text-center" v-for="item in couponList" :key="item.id">
           <td width="200" class="align-middle">{{ item.code }}</td>
           <td class="align-middle">{{ item.title }}</td>
-          <td width="120" class="text-right align-middle">
+          <td width="120" class="text-center align-middle">
             {{ item.percent }}%
           </td>
           <th width="120" class="align-middle">
@@ -39,7 +39,7 @@
           <td width="200">
             <div class="btn-group">
               <button
-                class="btn btn-outline-info btn-sm"
+                class="btn btn-outline-danger btn-sm"
                 @click="openModal(false, item, 'edit')"
               >
                 編輯

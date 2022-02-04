@@ -217,35 +217,37 @@ export default {
     },
   },
   created() {
-    this.getProduct(this.$route.params.productId);
-    this.getFavorites();
-    this.$bus.$on("productInfo:add", (item) => {
-      const itemIndex = this.favorites.findIndex(
+    const vm = this;
+    vm.getProduct(vm.$route.params.productId);
+    vm.getFavorites();
+    vm.$bus.$on("productInfo:add", (item) => {
+      const itemIndex = vm.favorites.findIndex(
         (product) => product.id === item.id
       );
       if (itemIndex === -1) {
-        this.favorites.push(item);
-        localStorage.setItem("favorites", JSON.stringify(this.favorites));
-        this.getFavorites();
-        this.$bus.$emit("navbarFavorites:update");
+        vm.favorites.push(item);
+        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
+        vm.getFavorites();
+        vm.$bus.$emit("navbarFavorites:update");
       }
     });
 
-    this.$bus.$on("productInfo:remove", (item) => {
-      const itemIndex = this.favorites.findIndex(
+    vm.$bus.$on("productInfo:remove", (item) => {
+      const itemIndex = vm.favorites.findIndex(
         (product) => product.id === item.id
       );
       if (itemIndex !== -1) {
-        this.favorites.splice(itemIndex, 1);
-        localStorage.setItem("favorites", JSON.stringify(this.favorites));
-        this.getFavorites();
-        this.$bus.$emit("navbarFavorites:update");
+        vm.favorites.splice(itemIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
+        vm.getFavorites();
+        vm.$bus.$emit("navbarFavorites:update");
       }
     });
   },
   beforeDestroy() {
-    this.$bus.$off("productInfo:remove");
-    this.$bus.$off("productInfo:remove");
+    const vm = this;
+    vm.$bus.$off("productInfo:remove");
+    vm.$bus.$off("productInfo:remove");
   },
 };
 </script>

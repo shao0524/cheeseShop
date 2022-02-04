@@ -1,0 +1,65 @@
+// navbar
+.backendNavbar {
+  width: 100%;
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  padding: .25rem 1rem;
+  background-color: $primary;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75em 1em;
+
+  &-logo {
+    color: $light;
+    font-size: 1.5rem;
+  }
+
+  &-toggle {
+    padding: 0 .75em;
+    color: $light;
+    border: 0;
+    background-color: $primary;
+    border: 2px solid $primary;
+    border-radius: 5px;
+    box-shadow: 3px 5px 15px darken($primary, 15%);
+
+    &-active {
+      box-shadow: 3px 3px 15px darken($primary, 15%) inset;
+    }
+
+    @include lg {
+      display: none;
+    }
+  }
+
+  &-nav {
+    display: none;
+
+    @include lg {
+      margin-bottom: 0;
+      display: block;
+    }
+
+    &-item {
+
+      &-link {
+        display: block;
+        width: 100%;
+        color: white;
+        padding: 0.5em 1em;
+        background-color: lighten($primary, 10%);
+        border-radius: 5px;
+
+        &:hover {
+          background-color: white;
+          color: $primary;
+
+        }
+      }
+    }
+  }
+
+}

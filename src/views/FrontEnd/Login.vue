@@ -2,7 +2,7 @@
   <div class="bgLogin">
     <div class="container-fluid">
       <div class="row justify-content-center align-items-center vh-100">
-        <div class="col-12 col-md-6 col-lg-3">
+        <div class="col-10 col-sm-8 col-md-6 col-lg-4 col-xl-3">
           <div class="card bg-dark text-white py-5 shadow-3">
             <div class="card-header text-center">
               <h3 class="text-warning py-3">會員登入</h3>
@@ -16,8 +16,9 @@
               </div>
             </div>
             <div class="card-body">
-              <form @submit.prevent="login">
+              <form>
                 <div class="form-froup mb-3">
+                  <label for="email">Email</label>
                   <input
                     type="email"
                     name="email"
@@ -28,6 +29,7 @@
                   />
                 </div>
                 <div class="form-froup mb-3">
+                  <label for="password">密碼</label>
                   <input
                     type="password"
                     name="password"
@@ -37,24 +39,17 @@
                     placeholder="Password"
                   />
                 </div>
-                <div class="form-group form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="keepSign"
-                    v-model="is_keepSign"
-                    @change="setSignStatus"
-                  />
-                  <label class="form-check-label" for="keepSign">記住我</label>
-                </div>
-                <div class="form-group">
-                  <input
-                    type="submit"
-                    value="登入"
-                    class="form-control btn btn-success rounded-oval"
-                  />
-                </div>
               </form>
+            </div>
+            <div class="card-footer">
+              <div class="form-group">
+                <input
+                  type="button"
+                  @click="login"
+                  value="登入"
+                  class="form-control btn btn-success rounded-oval"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -68,7 +63,6 @@ export default {
   name: "Login",
   data() {
     return {
-      is_keepSign: false,
       user: {},
     };
   },
@@ -83,63 +77,25 @@ export default {
           password: vm.user.password,
         })
         .then((res) => {
+          console.log(res);
           if (res.data.success) {
             const token = res.data.token;
             const expired = res.data.expired;
             document.cookie = `cheese4ny=${token}; expires=${new Date(
               expired
             )}`;
-            //紀錄帳號密碼
-            if (vm.is_keepSign) {
-              vm.setUserData("userName", vm.user.email);
-              vm.setUserData("password", vm.user.password);
-            } else {
-              vm.removeUserData("userName");
-              vm.removeUserData("password");
-            }
-            vm.$bus.$emit("Alert:success", res.data.message);
+            vm.$bus.$emit("alert", res.data.message, true);
             vm.$router.push("/");
+          } else {
+            vm.$bus.$emit("alert", "帳號或密碼有誤", false);
           }
           vm.$bus.$emit("isLoading", false);
         })
-        .catch((error) => {
+        .catch(() => {
           vm.$bus.$emit("isLoading", false);
-          vm.$bus.$emit("Alert:error", error);
+          vm.$bus.$emit("alert", "帳號和密碼為必填", false);
         });
     },
-    setUserData(name, value) {
-      const days = 30;
-      let exp = new Date();
-      exp.setTime(exp.getTime() + days * 24 * 60 * 60 * 1000);
-      document.cookie = `${name}=${value};expires=${exp.toGMTString()}; path="/login"`;
-    },
-    getUserData() {
-      const user = {};
-      user.email = document.cookie.replace(
-        /(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      user.password = document.cookie.replace(
-        /(?:(?:^|.*;\s*)password\s*=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      return user;
-    },
-    removeUserData(name) {
-      let exp = new Date();
-      exp.setTime(exp.getTime() - 1); //已經過期
-      document.cookie = `${name}=null; expires=${exp.toGMTString()}; path="/login"`;
-    },
-    setSignStatus() {
-      const vm = this;
-      localStorage.setItem("isKeepSign", vm.is_keepSign);
-    },
-  },
-  created() {
-    this.is_keepSign = JSON.parse(localStorage.getItem("isKeepSign"));
-    if (this.is_keepSign) {
-      this.user = this.getUserData();
-    }
   },
 };
 </script>

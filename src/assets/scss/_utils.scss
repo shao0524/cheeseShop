@@ -1,0 +1,69 @@
+//bg
+.bg {
+  max-width: 100%;
+
+  &-cover {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}
+
+// img
+.image {
+  max-width: 100%;
+
+  &-cover {
+    object-fit: cover;
+  }
+
+  &-position-center {
+    object-position: center center;
+  }
+
+  &-position-bottom {
+    object-position: center bottom;
+  }
+
+}
+
+
+// line-height
+.lineHeight {
+  @for $i from 1 through 5 {
+    &-#{$i} {
+      line-height: $i*1em;
+    }
+  }
+}
+
+//shadow
+.shadow {
+  @for $i from 1 through 5 {
+    &-#{$i} {
+      box-shadow: 5px 5px $i*5px 5px rgba(0, 0, 0, .1);
+    }
+  }
+}
+
+
+
+
+
+
+// bg-transparent
+.transparent {
+  background: transparent;
+}
+
+.table {
+  &-overflow {
+    overflow-x: auto;
+    white-space: nowrap;
+
+    @media (max-width:800px) {
+      display: block;
+    }
+  }
+
+}

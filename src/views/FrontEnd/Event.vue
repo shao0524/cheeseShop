@@ -27,8 +27,14 @@
                   {{ coupon.percent }}%<sub class="h5 text-danger">off</sub>
                 </h5>
                 <h5 class="py-1">使用期限至：{{ coupon.expired }}</h5>
-                <button class="btn btn-primary" @click="setCoupon(coupon)">
-                  取得優惠券
+                <input
+                  type="text"
+                  class="copy"
+                  v-model="coupon.code"
+                  id="couponCode"
+                />
+                <button class="btn btn-primary" @click="copyCouponCode">
+                  複製代碼
                 </button>
               </div>
             </div>
@@ -55,17 +61,12 @@ export default {
     };
   },
   methods: {
-    setCoupon(coupon) {
+    copyCouponCode() {
       const vm = this;
-      let coupons = JSON.parse(localStorage.getItem("coupons")) || [];
-      const index = coupons.findIndex((item) => item.code === coupon.code);
-      if (index === -1) {
-        coupons.push(coupon);
-        localStorage.setItem("coupons", JSON.stringify(coupons));
-        vm.$bus.$emit("Alert:success", "新增優惠券");
-      } else {
-        vm.$bus.$emit("Alert:error", "已存在相同優惠券");
-      }
+      const coupon = document.getElementById("couponCode");
+      coupon.select();
+      document.execCommand("Copy");
+      vm.$bus.$emit("alert", "已將代碼複製到剪貼簿", true);
     },
   },
 };

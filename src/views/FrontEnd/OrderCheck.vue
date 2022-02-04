@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <!-- card -->
     <div class="card shadow-3">
       <div class="card-head">
@@ -8,98 +8,100 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="row align-items-center">
-          <div class="col-12">
-            <!-- orderTable -->
-            <table class="table table-overflow">
-              <thead class="table-dark">
-                <tr class="text-center">
-                  <th>品項</th>
-                  <th width="120">數量</th>
-                  <th width="200">原價</th>
-                  <th width="200">特價</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="item in order.products"
-                  :key="item.id"
-                  class="text-center"
-                >
-                  <td>{{ item.product.title }}</td>
-                  <td width="120">{{ item.qty }}</td>
-                  <td width="120" class="text-right">
-                    {{ item.total | currency }}
-                  </td>
-                  <td
-                    width="120"
-                    class="text-right"
-                    :class="{ 'text-danger': item.final_total != item.total }"
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-12">
+              <!-- orderTable -->
+              <table class="table table-overflow">
+                <thead class="table-dark">
+                  <tr class="text-center">
+                    <th>品項</th>
+                    <th width="120">數量</th>
+                    <th width="200">原價</th>
+                    <th width="200">特價</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in order.products"
+                    :key="item.id"
+                    class="text-center"
                   >
-                    {{
-                      item.final_total != item.total
-                        ? item.final_total
-                        : item.total | currency
-                    }}
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr class="text-right">
-                  <td colspan="3">
-                    <h5>總計</h5>
-                  </td>
-                  <td>
-                    <h5 class="text-danger">
-                      {{ order.total | currency }}
-                    </h5>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-          <!-- customerTable -->
-          <div class="col-12">
-            <table class="table table-overflow">
-              <thead class="table-dark">
-                <tr>
-                  <th colspan="2" class="text-center">收件人資訊</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th width="120" class="text-center">姓名：</th>
-                  <td>{{ order.user.name }}</td>
-                </tr>
-                <tr>
-                  <th width="120" class="text-center">email：</th>
-                  <td>{{ order.user.email }}</td>
-                </tr>
-                <tr>
-                  <th width="120" class="text-center">電話：</th>
-                  <td>{{ order.user.tel }}</td>
-                </tr>
-                <tr>
-                  <th width="120" class="text-center">地址：</th>
-                  <td>{{ order.user.address }}</td>
-                </tr>
-                <tr>
-                  <th width="120" class="text-center font-weight-bolder">
-                    備註：
-                  </th>
-                  <td>{{ order.message }}</td>
-                </tr>
-                <tr>
-                  <th class="font-weight-bolder">付款狀況：</th>
-                  <td>
-                    <span class="text-danger" v-if="!order.is_paid"
-                      >尚未付款</span
+                    <td>{{ item.product.title }}</td>
+                    <td width="120">{{ item.qty }}</td>
+                    <td width="120" class="text-right">
+                      {{ item.total | currency }}
+                    </td>
+                    <td
+                      width="120"
+                      class="text-right"
+                      :class="{ 'text-danger': item.final_total != item.total }"
                     >
-                    <span class="text-success" v-else>已付款</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                      {{
+                        item.final_total != item.total
+                          ? item.final_total
+                          : item.total | currency
+                      }}
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="text-right">
+                    <td colspan="3">
+                      <h5>總計</h5>
+                    </td>
+                    <td>
+                      <h5 class="text-danger">
+                        {{ order.total | currency }}
+                      </h5>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- customerTable -->
+            <div class="col-12">
+              <table class="table">
+                <thead class="table-dark">
+                  <tr>
+                    <th colspan="2" class="text-center">收件人資訊</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th width="120" class="text-center">姓名：</th>
+                    <td>{{ order.user.name }}</td>
+                  </tr>
+                  <tr>
+                    <th width="120" class="text-center">email：</th>
+                    <td>{{ order.user.email }}</td>
+                  </tr>
+                  <tr>
+                    <th width="120" class="text-center">電話：</th>
+                    <td>{{ order.user.tel }}</td>
+                  </tr>
+                  <tr>
+                    <th width="120" class="text-center">地址：</th>
+                    <td>{{ order.user.address }}</td>
+                  </tr>
+                  <tr>
+                    <th width="120" class="text-center font-weight-bolder">
+                      備註：
+                    </th>
+                    <td>{{ order.message }}</td>
+                  </tr>
+                  <tr>
+                    <th class="font-weight-bolder">付款狀況：</th>
+                    <td>
+                      <span class="text-danger" v-if="!order.is_paid"
+                        >尚未付款</span
+                      >
+                      <span class="text-success" v-else>已付款</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -168,8 +170,9 @@ export default {
     },
   },
   created() {
-    this.getOrder();
-    this.orderId = this.$route.params.orderId;
+    const vm = this;
+    vm.getOrder();
+    vm.orderId = vm.$route.params.orderId;
   },
 };
 </script>

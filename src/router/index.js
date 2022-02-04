@@ -57,12 +57,12 @@ export default new Router({
           path: "order/",
           name: "Order",
           component: () => import("views/layout/Order.vue"),
-          redirect: "/order/cartlist",
+          redirect: "/order/orderInfo",
           children: [
             {
-              path: "cartlist",
-              name: "CartList",
-              component: () => import("views/FrontEnd/CartList.vue"),
+              path: "orderInfo",
+              name: "OrderInfo",
+              component: () => import("views/FrontEnd/OrderInfo.vue"),
             },
             {
               path: "customerinfo",
@@ -78,33 +78,6 @@ export default new Router({
               path: "ordercompleted",
               name: "OrderCompleted",
               component: () => import("views/FrontEnd/OrderCompleted.vue"),
-            },
-          ],
-        },
-        {
-          path: "customer/",
-          name: "Customer",
-          component: () => import("views/layout/Customer.vue"),
-          redirect: "/customer/myorderlist",
-          meta: {
-            requiresAuth: true,
-          },
-          children: [
-            {
-              path: "myorderlist",
-              name: "MyOrderList",
-              meta: {
-                requiresAuth: true,
-              },
-              component: () => import("views/FrontEnd/MyOrderList.vue"),
-            },
-            {
-              path: "mycouponlist",
-              name: "MyCouponList",
-              meta: {
-                requiresAuth: true,
-              },
-              component: () => import("views/FrontEnd/MyCouponList.vue"),
             },
           ],
         },

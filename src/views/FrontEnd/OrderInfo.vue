@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div>
     <h2 class="text-center mb-5">訂單資訊</h2>
     <!-- table -->
     <table class="table table-hover table-overflow table-borderless mb-3">
       <thead class="bg-dark text-white">
         <tr class="text-center">
-          <th width="150">#</th>
+          <th width="100">#</th>
           <th>商品名稱</th>
           <th width="200">數量</th>
           <th width="120">售價</th>
@@ -15,8 +15,8 @@
       </thead>
       <tbody>
         <tr v-for="item in cartList" :key="item.id" class="text-center">
-          <td width="150">
-            <img :src="item.imageUrl" class="table-imgSize" />
+          <td width="100">
+            <img :src="item.imageUrl" style="width: 100px" />
           </td>
           <td class="align-middle">
             {{ item.title }}
@@ -140,15 +140,15 @@ export default {
   methods: {
     getCartList() {
       const vm = this;
-      this.$bus.$emit("isLoading", true);
+      vm.$bus.$emit("isLoading", true);
       vm.cartList = JSON.parse(localStorage.getItem("cartList"));
       setTimeout(() => {
-        this.$bus.$emit("isLoading", false);
+        vm.$bus.$emit("isLoading", false);
       }, 1000);
     },
     removeItem(item) {
       const vm = this;
-      this.$bus.$emit("isLoading", true);
+      vm.$bus.$emit("isLoading", true);
       const itemIndex = vm.cartList.findIndex(
         (product) => product.id === item.id
       );
@@ -161,7 +161,7 @@ export default {
         vm.$bus.$emit("navbarCartList:update");
       }
       setTimeout(() => {
-        this.$bus.$emit("isLoading", false);
+        vm.$bus.$emit("isLoading", false);
       }, 1000);
     },
     changeQty(item, qty) {
@@ -210,39 +210,52 @@ export default {
     closeModal() {
       $("#postCartList").modal("hide");
     },
-    postCartList() {
+    async postCartList() {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}/cart`;
-      vm.cartList.forEach((item) => {
-        this.$http
-          .post(url, {
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USER}`;
+      try {
+        vm.$bus.$emit("isLoading", true);
+        const { data } = await this.$http.get(`${url}/cart`);
+        const { carts } = data.data;
+        //先清空購物車內容
+        if (carts.length !== 0) {
+          await carts.forEach((item) => {
+            this.$http.delete(`${url}/cart/${item.id}`);
+          });
+        }
+        //加入到購物車
+        await vm.cartList.forEach((item) => {
+          vm.$http.post(`${url}/cart`, {
             data: {
               product_id: item.id,
               qty: item.qty,
             },
-          })
-          .then(() => {})
-          .catch((error) => {
-            console.log(error);
           });
-      });
-      vm.closeModal();
-      setTimeout(() => {
-        vm.$router.push("/order/customerinfo");
-      }, 500);
+        });
+        //等待加入完成時間
+        await setTimeout(() => {
+          vm.closeModal();
+          vm.$bus.$emit("isLoading", false);
+          vm.$router.push("/order/customerinfo");
+        }, 1500);
+      } catch (error) {
+        vm.$bus.$emit("alert", error, false);
+      }
     },
   },
   computed: {
     totalPrice() {
+      const vm = this;
       let total = 0;
-      this.cartList.forEach((item) => {
+      vm.cartList.forEach((item) => {
         total += item.price * item.qty;
       });
       return total;
     },
   },
   created() {
-    this.getCartList();
+    const vm = this;
+    vm.getCartList();
   },
 };
 </script>

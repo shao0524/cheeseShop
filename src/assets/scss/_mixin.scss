@@ -1,0 +1,41 @@
+@mixin sm {
+  @media (min-width:576px) {
+    @content;
+  }
+}
+
+;
+
+@mixin md {
+  @media (min-width:768px) {
+    @content;
+  }
+}
+
+
+@mixin lg {
+  @media (min-width:992px) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width:1200px) {
+    @content;
+  }
+}
+
+@mixin gradationColor($direction, $color...) {
+  background: linear-gradient($direction, $color);
+}
+
+@mixin logoFont {
+  font-family: 'Architects Daughter', 'Architects Daughter', 'Noto Sans TC', cursive, sans-serif;
+}
+
+
+
+@mixin size($w, $h:$w) {
+  width: $w;
+  height: $h;
+}

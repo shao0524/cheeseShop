@@ -1,0 +1,37 @@
+.listGroup {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(black, 0.1);
+
+    &-header {
+        background-color: darken($warning, 5%);
+        padding: 0.75em 1em;
+
+        &-title {
+            color: white;
+            letter-spacing: 0.25em;
+        }
+    }
+
+    &-body {
+        background-color: #fff;
+    }
+
+    &-item {
+        padding: 0.75em 1em;
+
+        &:hover {
+            background-color: rgba($warning, 0.3);
+
+        }
+
+        &-active {
+            background-color: rgba($warning, 0.3);
+        }
+
+        &-link {
+            display: block;
+            color: black;
+
+        }
+    }
+}

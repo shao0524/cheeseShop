@@ -1,22 +1,39 @@
 <template>
   <div>
-    <div class="listGroup mt-5 font-weight-bolder">
-      <a
-        href="#Card"
-        class="listGroup-item"
-        @click.prevent="changeCategory('全部商品'), scoller()"
-        :class="{ active: clickedCategory == '全部商品' }"
-        >全部商品</a
-      >
-      <a
-        href="#Card"
-        class="listGroup-item"
-        @click.prevent="changeCategory(category), scoller()"
-        :class="{ active: clickedCategory == category }"
-        v-for="(category, index) in categories"
-        :key="index"
-        >{{ category }}</a
-      >
+    <div class="listGroup">
+      <div class="listGroup-header">
+        <h4 class="listGroup-header-title">起司分類</h4>
+      </div>
+      <ul class="listGroup-body">
+        <li
+          class="listGroup-item"
+          :class="{
+            'listGroup-item-active': clickedCategory == '全部商品',
+          }"
+        >
+          <a
+            href="#Card"
+            class="listGroup-item-link"
+            @click.prevent="changeCategory('全部商品'), scoller()"
+            >全部商品</a
+          >
+        </li>
+        <li
+          class="listGroup-item"
+          v-for="(category, index) in categories"
+          :key="index"
+          :class="{
+            'listGroup-item-active': clickedCategory == category,
+          }"
+        >
+          <a
+            href="#Card"
+            class="listGroup-item-link"
+            @click.prevent="changeCategory(category), scoller()"
+            >{{ category }}</a
+          >
+        </li>
+      </ul>
     </div>
   </div>
 </template>

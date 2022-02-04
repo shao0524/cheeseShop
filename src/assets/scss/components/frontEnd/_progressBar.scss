@@ -1,0 +1,63 @@
+$defaultColor: rgba(0, 0, 0, 0.3);
+$activeColor : rgb(5, 185, 5);
+
+.progressBar {
+
+  display: flex;
+  justify-content: space-between;
+  padding: 3em 1em;
+  position: relative;
+
+
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 1em;
+    right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
+    border: 1px solid $defaultColor;
+  }
+
+  &-item {
+    position: relative;
+
+
+    &-circle {
+      @include size(50px);
+      border-radius: 50%;
+      border: 2px solid $defaultColor;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5em;
+      background-color: white;
+
+      @include sm {
+        @include size(80px);
+      }
+
+      &-active {
+        color: $activeColor;
+        border-color: $activeColor;
+        box-shadow: 0 0 30px $activeColor;
+      }
+    }
+
+    &-title {
+      position: absolute;
+      top: calc(100% + 1em);
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      margin-bottom: 0;
+      font-size: 0.75em;
+
+      @include sm {
+        font-size: 1em;
+      }
+    }
+  }
+}

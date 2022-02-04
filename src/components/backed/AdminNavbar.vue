@@ -1,35 +1,23 @@
 <template>
-  <nav
-    class="
-      navbar navbar-dark
-      sticky-top
-      bg-dark
-      flex-md-nowrap
-      p-0
-      shadow
-      bgDark
-    "
-  >
-    <a
-      class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 text-center logoStyle"
-      href="#"
-      >Cheeseny</a
+  <nav class="backendNavbar">
+    <router-link class="backendNavbar-logo logoStyle" to="/"
+      >Cheeseny</router-link
     >
     <button
-      class="navbar-toggler position-absolute d-md-none collapsed"
+      class="backendNavbar-toggle"
+      :class="{ 'backendNavbar-toggle-active': isToggleClick }"
       type="button"
-      data-toggle="collapse"
-      data-target="#sidebarMenu"
+      @click="isToggleClick = !isToggleClick"
       aria-controls="sidebarMenu"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+      <i class="fas fa-bars"></i>
     </button>
-    <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap d-none d-lg-block">
+    <ul class="backendNavbar-nav">
+      <li class="backendNavbar-nav-item">
         <router-link
-          class="nav-link px-3 text-white"
+          class="backendNavbar-nav-item-link"
           @click.native="signout"
           to="/"
           >登出</router-link
@@ -42,7 +30,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      isToggleClick: false,
+    };
   },
   methods: {
     signout() {
@@ -65,6 +55,18 @@ export default {
           vm.$bus.$emit("isLoading", false);
           vm.$bus.$emit("Alert:error", error);
         });
+    },
+  },
+  watch: {
+    isToggleClick(value) {
+      const vm = this;
+      if (value) {
+        //開啟
+        vm.$bus.$emit("openSidebar");
+      } else {
+        //關閉
+        vm.$bus.$emit("hideSidebar");
+      }
     },
   },
   created() {
