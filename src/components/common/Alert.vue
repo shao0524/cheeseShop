@@ -1,34 +1,28 @@
 <template>
-  <div class="message-alert">
+  <div>
     <div
-      class="alert alert-dismissible d-flex p-0"
-      :class="'bg-' + item.status"
-      v-for="(item, i) in messages"
-      :key="i"
-      role="alert"
+      class="myAlert"
+      :class="{
+        'myAlert-success': item.isSuccess,
+        'myAlert-danger': !item.isSuccess,
+      }"
+      v-for="(item, index) in messages"
+      :key="item.timeStamp"
+      :style="{ top: `${index * 10 + 20}%` }"
     >
-      <div class="alert-icon">
-        <i
-          :class="{
-            'far fa-check-circle': status,
-            'fas fa-exclamation-triangle': !status,
-          }"
-        ></i>
+      <div class="myAlert-icon">
+        <i class="fas fa-exclamation-triangle"></i>
       </div>
-      <div class="d-flex align-items-center">
-        <h5 class="align-self-center text-white pl-3 pr-5 mb-0">
-          {{ item.message }}
-        </h5>
-        <button
-          type="button"
-          class="close text-white h-100"
-          data-dismiss="alert"
-          aria-label="Close"
-          @click="removeMessage(i)"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+      <h3 class="myAlert-message">{{ item.message }}</h3>
+      <button
+        type="button"
+        class="myAlert-close"
+        data-dismiss="alert"
+        aria-label="Close"
+        @click="removeMessage(item.timeStamp)"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
   </div>
 </template>
@@ -38,46 +32,48 @@ export default {
   data() {
     return {
       messages: [],
-      status: false,
     };
   },
   methods: {
-    updateMessage(message, status) {
+    updateMessage(message, isSuccess) {
       const vm = this;
-      const timestamp = Math.floor(new Date() / 1000);
-      this.messages.push({
-        timestamp,
+      const timeStamp = Math.floor(new Date() / 1000);
+      vm.messages.push({
+        timeStamp,
         message,
-        status,
+        isSuccess,
       });
-      vm.removeMessageWithTiming(timestamp);
+      vm.removeMessageWithTiming(timeStamp);
     },
-    removeMessage(num) {
-      this.messages.splice(num, 1);
+    removeMessage(timeStamp) {
+      const vm = this;
+      const index = vm.messages.findIndex(
+        (item) => item.timeStamp === timeStamp
+      );
+      vm.messages.splice(index, 1);
     },
-    removeMessageWithTiming(timestamp) {
+    removeMessageWithTiming(timeStamp) {
       const vm = this;
       setTimeout(() => {
-        vm.messages.forEach((item, i) => {
-          if (item.timestamp === timestamp) {
-            vm.messages.splice(i, 1);
-          }
-        });
+        vm.removeMessage(timeStamp);
       }, 5000);
     },
   },
+  computed: {
+    messageLen() {
+      const vm = this;
+      return vm.messages.length;
+    },
+  },
   created() {
-    this.$bus.$on("Alert:success", (msg, status = "warning") => {
-      this.updateMessage(msg, status);
-      this.status = true;
-    });
-    this.$bus.$on("Alert:error", (msg, status = "danger") => {
-      this.updateMessage(msg, status);
+    const vm = this;
+    vm.$bus.$on("alert", (message, isSuccess) => {
+      vm.updateMessage(message, isSuccess);
     });
   },
   beforeDestroy() {
-    this.$bus.$off("Alert:success");
-    this.$bus.$off("Alert:error");
+    const vm = this;
+    vm.$bus.$off("alert");
   },
 };
 </script>

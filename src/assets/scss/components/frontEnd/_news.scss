@@ -1,0 +1,41 @@
+.news {
+  padding: 3em 0;
+  max-height: 500px;
+  overflow-y: auto;
+
+  &-list {
+    margin: 0.5em 0;
+    list-style: none;
+    letter-spacing: .1em;
+    font-size: 20px;
+
+    &-item {
+      padding: 10px 0;
+      border-bottom: 1px solid black;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: rgba(black, 0.1);
+      }
+
+      &-date {
+        margin-right: 0.75em;
+        margin-bottom: 0;
+
+        @include sm {
+          font-size: 1em;
+        }
+
+      }
+
+      &-link {
+        font-size: 0.75em;
+
+        @include sm {
+          font-size: 1em;
+        }
+      }
+    }
+  }
+}

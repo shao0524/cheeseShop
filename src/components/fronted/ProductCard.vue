@@ -65,7 +65,13 @@ export default {
   methods: {
     addCart(item, qty = 1) {
       const vm = this;
+      //更新購物車
       vm.$bus.$emit("sidebar:addtoCart", item, qty);
+      //更新navbar
+      vm.$bus.$emit("navbarCartList:update");
+      //alert
+      const message = `${item.title} 加入購物車`;
+      vm.$bus.$emit("alert", message, true);
     },
   },
   computed: {

@@ -1,0 +1,15 @@
+.scollTopBtn {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  padding: 0.75em;
+  border-radius: 50%;
+  z-index: 1000;
+  border: 0;
+  box-shadow: 0 0 10px rgba(black, 0.3);
+  background-color: $warning;
+
+  &:hover {
+    background-color: darken($warning, 5%);
+  }
+}

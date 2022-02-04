@@ -1,22 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 * {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: bolder;
   box-sizing: border-box;
 }
+
 body {
   background: rgba(221, 204, 166, 0.1);
   font-family: Andale Mono, monospace;
 }
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
+  font-family: 'Noto Sans TC', sans-serif;
   font-weight: bolder;
 }
 
 a {
+
   text-decoration: none;
+
   &:hover {
     text-decoration: none;
   }
@@ -45,8 +51,8 @@ input[type="number"] {
   width: 5em;
 }
 
-button{
-  &:disabled{
+button {
+  &:disabled {
     cursor: not-allowed;
   }
 }

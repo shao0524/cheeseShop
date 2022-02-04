@@ -1,0 +1,65 @@
+.footer {
+    &-body {
+        background-color: $warning;
+        padding: 1.5em 0;
+    }
+
+    &-title {
+        font-size: 1.5em;
+        color: $primary;
+        @include logoFont;
+
+        @include lg {
+            font-size: 2em;
+        }
+    }
+
+    &-iconBlock {
+        &-iconGroup {
+            margin-top: 1em;
+
+            &-icon {
+                padding: 0.75em;
+
+                &:first-child {
+                    padding-left: 0;
+                }
+
+                @include lg {
+                    font-size: 1em;
+                }
+
+
+            }
+        }
+    }
+
+    &-contact {
+        &-list {
+
+            &-item {
+                padding: 0.25em 0;
+
+                &-link {
+                    font-size: 1em;
+
+                    @include lg {
+                        font-size: 1.5em;
+                    }
+
+                    i {
+                        padding: 0 0.25em;
+                    }
+                }
+            }
+        }
+
+    }
+
+    &-footer {
+        padding: .5em 0;
+        background-color: $dark;
+        width: 100%;
+        text-align: center;
+    }
+}

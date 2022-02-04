@@ -4,34 +4,34 @@
     <Carousel />
     <div class="container">
       <div class="mt-3 mt-lg-3">
-        <div class="row mx-1">
+        <!-- search -->
+        <div class="mb-3">
+          <div class="form-row justify-content-end">
+            <div class="col-12 col-md-12 col-lg-3">
+              <input
+                type="text"
+                id="search"
+                class="form-control w-100 mx-auto"
+                placeholder="請輸入商品名稱"
+                v-model="searchText"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <!-- productCategory -->
-          <div class="col-12 col-md-10 col-xl-3 mx-auto">
+          <div class="col-12 col-md-12 col-lg-3 mb-3">
             <ProductCategory
               :categories="categories"
               @changeCategory="changeCategory"
             />
           </div>
           <!-- productCard -->
-          <div class="col-12 col-md-10 col-xl-9 mx-auto" id="Card">
-            <!-- search -->
-            <div class="mb-3 mt-3">
-              <div class="form-row justify-content-center">
-                <div class="col-12 col-md-6 col-lg-6">
-                  <input
-                    type="text"
-                    id="search"
-                    class="form-control w-100 mx-auto"
-                    placeholder="請輸入商品名稱"
-                    v-model="searchText"
-                  />
-                </div>
-              </div>
-            </div>
+          <div class="col-12 col-md-12 col-lg-9" id="Card">
             <!-- card -->
             <div class="row">
               <div
-                class="col-12 col-md-6 col-xl-4 mb-5"
+                class="col-12 col-md-6 col-lg-4 mb-3"
                 v-for="item in filter(currentPage)"
                 :key="item.id"
               >
@@ -41,7 +41,7 @@
 
             <!-- pagination -->
             <Pagination
-              class="mb-3"
+              class="py-3"
               :pagination="pagination"
               @changePage="changePage"
             />
@@ -174,32 +174,34 @@ export default {
     },
   },
   created() {
-    this.getAllProduct();
-    this.getFavorites();
-    this.$bus.$on("productList:add", (item) => {
-      const itemIndex = this.favorites.findIndex(
+    const vm = this;
+    vm.getAllProduct();
+    vm.getFavorites();
+    vm.$bus.$on("productList:add", (item) => {
+      const itemIndex = vm.favorites.findIndex(
         (product) => product.id === item.id
       );
       if (itemIndex === -1) {
-        this.favorites.push(item);
-        localStorage.setItem("favorites", JSON.stringify(this.favorites));
-        this.$bus.$emit("navbarFavorites:update");
+        vm.favorites.push(item);
+        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
+        vm.$bus.$emit("navbarFavorites:update");
       }
     });
-    this.$bus.$on("productList:remove", (item) => {
-      const itemIndex = this.favorites.findIndex(
+    vm.$bus.$on("productList:remove", (item) => {
+      const itemIndex = vm.favorites.findIndex(
         (product) => product.id === item.id
       );
       if (itemIndex !== -1) {
-        this.favorites.splice(itemIndex, 1);
-        localStorage.setItem("favorites", JSON.stringify(this.favorites));
-        this.$bus.$emit("navbarFavorites:update");
+        vm.favorites.splice(itemIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(vm.favorites));
+        vm.$bus.$emit("navbarFavorites:update");
       }
     });
   },
   beforeDestroy() {
-    this.$bus.$off("productList:add");
-    this.$bus.$off("productList:remove");
+    const vm = this;
+    vm.$bus.$off("productList:add");
+    vm.$bus.$off("productList:remove");
   },
 };
 </script>

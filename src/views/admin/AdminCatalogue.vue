@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- create button -->
-    <div class="text-right my-3 mr-3">
+    <div class="text-right my-3">
       <button class="btb btn-primary px-3 py-1" @click="openModal(true)">
         建立新商品
       </button>
     </div>
     <!-- table -->
-    <table class="table table-hover table-overflow table-striped table-dark">
-      <thead class="bg-warning">
+    <table class="table table-hover table-striped table-dark table-overflow">
+      <thead class="bg-primary">
         <tr class="text-center">
           <th width="250">產品編號</th>
           <th>產品名稱</th>
@@ -16,8 +16,8 @@
           <th width="80">庫存</th>
           <th width="120" class="text-center">原價</th>
           <th width="120" class="text-center">特價</th>
-          <th width="120">狀態</th>
-          <th width="200">編輯</th>
+          <th width="80">狀態</th>
+          <th width="120">編輯</th>
         </tr>
       </thead>
       <tbody>
@@ -30,14 +30,14 @@
             {{ item.origin_price | currency }}
           </td>
           <td width="120" class="text-right">{{ item.price | currency }}</td>
-          <td width="120">
+          <td width="80">
             <span class="text-success" v-if="item.is_enabled">啟用中</span>
             <span class="text-danger" v-else>未啟用</span>
           </td>
-          <td width="200">
+          <td width="120">
             <div class="btn-group">
               <button
-                class="btn btn-outline-info btn-sm"
+                class="btn btn-outline-danger btn-sm"
                 @click="openModal(false, item, 'edit')"
               >
                 編輯

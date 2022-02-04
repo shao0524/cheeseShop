@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5">
     <table class="table table-hover table-overflow table-striped table-dark">
-      <thead class="bg-warning">
+      <thead class="bg-primary">
         <tr class="text-center">
           <th width="250">訂單編號</th>
           <th>訂購人</th>
@@ -75,12 +75,12 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <table class="table w-75 mx-auto">
+                    <table class="table">
                       <tbody>
                         <tr>
                           <th
                             width="150"
-                            class="text-center bg-warning text-white"
+                            class="text-center bg-primary text-white"
                           >
                             訂購人姓名
                           </th>
@@ -91,7 +91,7 @@
                         <tr>
                           <th
                             width="150"
-                            class="text-center bg-warning text-white"
+                            class="text-center bg-primary text-white"
                           >
                             Email
                           </th>
@@ -102,7 +102,7 @@
                         <tr>
                           <th
                             width="150"
-                            class="text-center bg-warning text-white"
+                            class="text-center bg-primary text-white"
                           >
                             電話
                           </th>
@@ -113,7 +113,7 @@
                         <tr>
                           <th
                             width="150"
-                            class="text-center bg-warning text-white"
+                            class="text-center bg-primary text-white"
                           >
                             地址
                           </th>
@@ -124,7 +124,7 @@
                         <tr>
                           <th
                             width="150"
-                            class="text-center bg-warning text-white"
+                            class="text-center bg-primary text-white"
                           >
                             備註
                           </th>
@@ -146,8 +146,8 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <table class="table w-75 mx-auto" style="max-height: 300px">
-                      <thead class="bg-warning text-white">
+                    <table class="table" style="max-height: 300px">
+                      <thead class="bg-primary text-white">
                         <tr class="text-center">
                           <th>產品名稱</th>
                           <th width="80">數量</th>

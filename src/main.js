@@ -35,6 +35,19 @@ localize("zh_TW", TW);
 
 extend("required", required);
 extend("email", email);
+extend("name", {
+  validate: (value) => (value.length >= 2 ? true : "姓名至少要為2個字元"),
+});
+extend("phone", {
+  validate: (value) => {
+    const regex = /^0\d{1,2}-?\d{7}$|^09\d{2}-?\d{3}-?\d{3}$/;
+    if (regex.test(value)) {
+      return true;
+    } else {
+      return "格式錯誤";
+    }
+  },
+});
 
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
@@ -52,7 +65,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     const url = `${process.env.VUE_APP_APIPATH}/api/user/check`;
     axios.post(url).then((res) => {
-      console.log(res);
       if (res.data.success) {
         next();
       } else {

@@ -1,7 +1,12 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner mb-5 aboutImage"></div>
+    <div
+      class="banner"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1619865482177-71d195df05b1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+      "
+    ></div>
     <!-- section1 -->
     <section class="mt-5 pb-5">
       <div class="container mt-5">
